@@ -1,3 +1,5 @@
+scalar DateTime
+
 type User {
   id: String!
   name: String!
@@ -32,7 +34,7 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): User
-  updateUser(input: UpdateUserInput!): User
+  createUser(user: CreateUserInput!): User
+  updateUser(user: UpdateUserInput!): User
   removeUser(id: String!): User
 }
