@@ -1,20 +1,20 @@
-import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PrismaService } from 'src/prisma.service';
-import { CreateUserDto } from './DTO/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+
+import { User } from '../graphql';
 
 @Resolver()
 export class UserResolver {
-  @Inject(PrismaService)
-  private prisma: PrismaService;
+  constructor(private readonly prisma: PrismaService) {}
 
   @Query('users')
-  async users() {
+  async users(): Promise<User[]> {
     return this.prisma.user.findMany();
   }
 
   @Query('user')
-  async user(id: string) {
+  async user(id: string): Promise<User> {
     return this.prisma.user.findUnique({
       where: {
         id,
@@ -23,7 +23,7 @@ export class UserResolver {
   }
 
   @Mutation('createUser')
-  async createUser(@Args('user') User: CreateUserDto) {
+  async createUser(@Args('user') User: CreateUserDto): Promise<User> {
     return this.prisma.user.create({
       data: User,
       select: {
