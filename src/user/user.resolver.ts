@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
 import { User } from '../graphql';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Resolver()
 export class UserResolver {
@@ -36,6 +37,16 @@ export class UserResolver {
         createTime: true,
         updateTime: true,
       },
+    });
+  }
+
+  @Mutation('updateUser')
+  async updateUser(@Args('user') user: UpdateUserDto): Promise<User> {
+    return this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: user,
     });
   }
 }
