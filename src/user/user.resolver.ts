@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
-import { User } from '../graphql';
+import { User } from 'src/graphql.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Resolver()
