@@ -8,19 +8,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export class CreateUserInput {
+export class UserInput {
     name: string;
     password: string;
     account: string;
-    desc?: Nullable<string>;
-    tel?: Nullable<string>;
-}
-
-export class UpdateUserInput {
-    id: string;
-    name?: Nullable<string>;
-    password?: Nullable<string>;
-    account?: Nullable<string>;
     desc?: Nullable<string>;
     tel?: Nullable<string>;
 }
@@ -43,9 +34,9 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract createUser(user: CreateUserInput): Nullable<User> | Promise<Nullable<User>>;
+    abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
 
-    abstract updateUser(user: UpdateUserInput): Nullable<User> | Promise<Nullable<User>>;
+    abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
 
     abstract removeUser(id: string): Nullable<User> | Promise<Nullable<User>>;
 }

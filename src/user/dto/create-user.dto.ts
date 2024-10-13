@@ -1,3 +1,3 @@
-import { CreateUserInput } from 'src/graphql.schema';
+import { UserInput } from 'src/graphql.schema';
 
-export class CreateUserDto extends CreateUserInput {}
+export class CreateUserDto extends UserInput {}

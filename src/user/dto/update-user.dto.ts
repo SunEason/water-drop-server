@@ -1,3 +1,3 @@
-import { UpdateUserInput } from 'src/graphql.schema';
+import { UserInput } from 'src/graphql.schema';
 
-export class UpdateUserDto extends UpdateUserInput {}
+export class UpdateUserDto extends UserInput {}

@@ -1,61 +1,39 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
 import { User } from 'src/graphql.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserService } from './user.service';
 
 @Resolver()
 export class UserResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Query('users')
   async users(): Promise<User[]> {
-    return this.prisma.user.findMany();
+    return this.userService.findAllUsers();
   }
 
   @Query('user')
   async user(id: string): Promise<User> {
-    return this.prisma.user.findUnique({
-      where: {
-        id,
-      },
-    });
+    return this.userService.findUserById(id);
   }
 
   @Mutation('createUser')
-  async createUser(@Args('user') User: CreateUserDto): Promise<User> {
-    return this.prisma.user.create({
-      data: User,
-      select: {
-        id: true,
-        name: true,
-        password: true,
-        account: true,
-        desc: true,
-        tel: true,
-        createTime: true,
-        updateTime: true,
-      },
-    });
+  async createUser(@Args('input') user: CreateUserDto): Promise<User> {
+    return this.userService.createUser(user);
   }
 
   @Mutation('updateUser')
-  async updateUser(@Args('user') user: UpdateUserDto): Promise<User> {
-    return this.prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: user,
-    });
+  async updateUser(
+    @Args('id') id: string,
+    @Args('input') user: UpdateUserDto,
+  ): Promise<User> {
+    return this.userService.updateUser(id, user);
   }
 
   @Mutation('removeUser')
   async removeUser(@Args('id') id: string): Promise<User> {
-    return this.prisma.user.delete({
-      where: {
-        id,
-      },
-    });
+    return this.userService.deleteUser(id);
   }
 }
