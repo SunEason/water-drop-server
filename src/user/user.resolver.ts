@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
 import { User } from '../graphql';
@@ -47,6 +47,15 @@ export class UserResolver {
         id: user.id,
       },
       data: user,
+    });
+  }
+
+  @Mutation('removeUser')
+  async removeUser(@Args('id') id: string): Promise<User> {
+    return this.prisma.user.delete({
+      where: {
+        id,
+      },
     });
   }
 }
