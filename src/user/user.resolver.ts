@@ -15,7 +15,8 @@ export class UserResolver {
   }
 
   @Query('user')
-  async user(id: string): Promise<User> {
+  async user(@Args('id') id: string): Promise<User> {
+    if (!id || !id.length) throw new Error('Id is required');
     return this.userService.findUserById(id);
   }
 

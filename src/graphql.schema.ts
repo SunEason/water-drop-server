@@ -23,8 +23,8 @@ export class User {
     account: string;
     desc?: Nullable<string>;
     tel?: Nullable<string>;
-    createTime: DateTime;
-    updateTime: DateTime;
+    createTime: number;
+    updateTime: number;
 }
 
 export abstract class IQuery {
@@ -41,5 +41,4 @@ export abstract class IMutation {
     abstract removeUser(id: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
-export type DateTime = any;
 type Nullable<T> = T | null;

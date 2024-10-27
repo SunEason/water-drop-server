@@ -8,20 +8,31 @@ export class UserService {
 
   async findAllUsers() {
     try {
-      return this.prisma.user.findMany();
+      const data = await this.prisma.user.findMany();
+      return data.map((user) => {
+        return {
+          ...user,
+          createTime: user.createTime.getTime(),
+          updateTime: user.updateTime.getTime(),
+        };
+      });
     } catch (err) {
-      // Handle error
       throw new Error(err);
     }
   }
 
   async findUserById(id: string) {
     try {
-      return this.prisma.user.findUnique({
+      const data = await this.prisma.user.findUnique({
         where: {
           id: id,
         },
       });
+      return {
+        ...data,
+        createTime: data.createTime.getTime(),
+        updateTime: data.updateTime.getTime(),
+      };
     } catch (err) {
       throw new Error(err);
     }
@@ -29,9 +40,14 @@ export class UserService {
 
   async createUser(user: UserInput) {
     try {
-      return this.prisma.user.create({
+      const data = await this.prisma.user.create({
         data: user,
       });
+      return {
+        ...data,
+        createTime: data.createTime.getTime(),
+        updateTime: data.updateTime.getTime(),
+      };
     } catch (err) {
       throw new Error(err);
     }
@@ -39,12 +55,17 @@ export class UserService {
 
   async updateUser(id: string, user: UserInput) {
     try {
-      return this.prisma.user.update({
+      const data = await this.prisma.user.update({
         where: {
           id: id,
         },
         data: user,
       });
+      return {
+        ...data,
+        createTime: data.createTime.getTime(),
+        updateTime: data.updateTime.getTime(),
+      };
     } catch (err) {
       throw new Error(err);
     }
@@ -52,11 +73,16 @@ export class UserService {
 
   async deleteUser(id: string) {
     try {
-      return this.prisma.user.delete({
+      const data = await this.prisma.user.delete({
         where: {
           id: id,
         },
       });
+      return {
+        ...data,
+        createTime: data.createTime.getTime(),
+        updateTime: data.updateTime.getTime(),
+      };
     } catch (err) {
       throw new Error(err);
     }
