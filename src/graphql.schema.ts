@@ -23,8 +23,8 @@ export class User {
     account: string;
     desc?: Nullable<string>;
     tel?: Nullable<string>;
-    createTime: number;
-    updateTime: number;
+    createTime: string;
+    updateTime: string;
 }
 
 export abstract class IQuery {

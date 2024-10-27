@@ -5,8 +5,8 @@ type User {
   account: String!
   desc: String
   tel: String
-  createTime: Int!
-  updateTime: Int!
+  createTime: String!
+  updateTime: String!
 }
 
 input UserInput {

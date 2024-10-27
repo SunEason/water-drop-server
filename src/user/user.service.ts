@@ -12,8 +12,8 @@ export class UserService {
       return data.map((user) => {
         return {
           ...user,
-          createTime: user.createTime.getTime(),
-          updateTime: user.updateTime.getTime(),
+          createTime: user.createTime.getTime().toString(),
+          updateTime: user.updateTime.getTime().toString(),
         };
       });
     } catch (err) {
@@ -30,8 +30,8 @@ export class UserService {
       });
       return {
         ...data,
-        createTime: data.createTime.getTime(),
-        updateTime: data.updateTime.getTime(),
+        createTime: data.createTime.getTime().toString(),
+        updateTime: data.updateTime.getTime().toString(),
       };
     } catch (err) {
       throw new Error(err);
@@ -45,8 +45,8 @@ export class UserService {
       });
       return {
         ...data,
-        createTime: data.createTime.getTime(),
-        updateTime: data.updateTime.getTime(),
+        createTime: data.createTime.getTime().toString(),
+        updateTime: data.updateTime.getTime().toString(),
       };
     } catch (err) {
       throw new Error(err);
@@ -63,8 +63,8 @@ export class UserService {
       });
       return {
         ...data,
-        createTime: data.createTime.getTime(),
-        updateTime: data.updateTime.getTime(),
+        createTime: data.createTime.getTime().toString(),
+        updateTime: data.updateTime.getTime().toString(),
       };
     } catch (err) {
       throw new Error(err);
@@ -80,8 +80,8 @@ export class UserService {
       });
       return {
         ...data,
-        createTime: data.createTime.getTime(),
-        updateTime: data.updateTime.getTime(),
+        createTime: data.createTime.getTime().toString(),
+        updateTime: data.updateTime.getTime().toString(),
       };
     } catch (err) {
       throw new Error(err);
