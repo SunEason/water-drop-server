@@ -9,13 +9,7 @@ export class UserService {
   async findAllUsers() {
     try {
       const data = await this.prisma.user.findMany();
-      return data.map((user) => {
-        return {
-          ...user,
-          createTime: user.createTime.getTime().toString(),
-          updateTime: user.updateTime.getTime().toString(),
-        };
-      });
+      return data;
     } catch (err) {
       throw new Error(err);
     }
@@ -28,11 +22,7 @@ export class UserService {
           id: id,
         },
       });
-      return {
-        ...data,
-        createTime: data.createTime.getTime().toString(),
-        updateTime: data.updateTime.getTime().toString(),
-      };
+      return data;
     } catch (err) {
       throw new Error(err);
     }
@@ -43,11 +33,7 @@ export class UserService {
       const data = await this.prisma.user.create({
         data: user,
       });
-      return {
-        ...data,
-        createTime: data.createTime.getTime().toString(),
-        updateTime: data.updateTime.getTime().toString(),
-      };
+      return data;
     } catch (err) {
       throw new Error(err);
     }
@@ -61,11 +47,7 @@ export class UserService {
         },
         data: user,
       });
-      return {
-        ...data,
-        createTime: data.createTime.getTime().toString(),
-        updateTime: data.updateTime.getTime().toString(),
-      };
+      return data;
     } catch (err) {
       throw new Error(err);
     }
@@ -78,11 +60,7 @@ export class UserService {
           id: id,
         },
       });
-      return {
-        ...data,
-        createTime: data.createTime.getTime().toString(),
-        updateTime: data.updateTime.getTime().toString(),
-      };
+      return data;
     } catch (err) {
       throw new Error(err);
     }
