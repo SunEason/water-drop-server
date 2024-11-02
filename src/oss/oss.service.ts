@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import OSS from 'ali-oss';
-import dayjs from 'dayjs';
+import * as OSS from 'ali-oss';
+import * as dayjs from 'dayjs';
 import { OSSParams } from 'src/graphql.schema';
 
 @Injectable()
