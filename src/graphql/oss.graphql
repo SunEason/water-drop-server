@@ -1,0 +1,10 @@
+type OSSParams {
+  expire: String! 
+  policy: String!
+  signature: String!
+  accessId: String!
+}
+
+type Query {
+  OSSInfo: OSSParams
+}

@@ -16,6 +16,21 @@ export class UserInput {
     tel?: Nullable<string>;
 }
 
+export class OSSParams {
+    expire: string;
+    policy: string;
+    signature: string;
+    accessId: string;
+}
+
+export abstract class IQuery {
+    abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
+
+    abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
+
+    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
+}
+
 export class User {
     id: string;
     name: string;
@@ -25,12 +40,6 @@ export class User {
     tel?: Nullable<string>;
     createTime: DateTime;
     updateTime: DateTime;
-}
-
-export abstract class IQuery {
-    abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
-
-    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export abstract class IMutation {

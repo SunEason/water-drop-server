@@ -6,6 +6,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { UserModule } from './user/user.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { CommonModule } from './common/common.module';
+import { OSSModule } from './oss/oss.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CommonModule } from './common/common.module';
     }),
     UserModule,
     CommonModule,
+    OSSModule,
   ],
   controllers: [AppController],
   providers: [AppService],
