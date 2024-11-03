@@ -3,6 +3,7 @@ type OSSParams {
   policy: String!
   signature: String!
   accessId: String!
+  host: String!
 }
 
 type Query {

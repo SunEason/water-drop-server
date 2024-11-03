@@ -8,6 +8,7 @@ export class OSSResolver {
 
   @Query('OSSInfo')
   async getOSSInfo(): Promise<OSSParams> {
+    // console.log('getOSSInfo');
     return this.ossService.getSignature();
   }
 }

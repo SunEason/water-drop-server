@@ -2,18 +2,32 @@ import { Injectable } from '@nestjs/common';
 import * as OSS from 'ali-oss';
 import * as dayjs from 'dayjs';
 import { OSSParams } from 'src/graphql.schema';
+import { config } from 'oss.config';
 
 @Injectable()
 export class OSSService {
   async getSignature(): Promise<OSSParams> {
-    const config = {
-      accessKeyId: 'accessKeyId',
-      accessKeySecret: 'accessKeySecret',
-      bucket: 'ballentin-water-drop',
-      // callbackUrl: 'url',
-      dir: 'images/',
-    };
     const client = new OSS(config);
+
+    const rules: OSS.CORSRule[] = [
+      {
+        // 指定允许跨域请求的来源，支持通配符星号（*），表示允许所有的来源域。
+        allowedOrigin: 'http://localhost:*',
+        // 指定允许的跨域请求方法，支持GET、PUT、DELETE、POST和HEAD方法。
+        allowedMethod: ['POST', 'PUT', 'DELETE', 'GET', 'HEAD'],
+        // allowedMethod: '*',
+        // 指定允许跨域请求的响应头。建议无特殊情况下将此项设置为通配符星号（*）。
+        allowedHeader: '*',
+        // 指定允许用户从应用程序中访问的响应头，例如一个JavaScript的XMLHttpRequest对象。不允许使用通配符星号（*）。
+        exposeHeader: ['Content-Length', 'Content-Type'],
+        // 指定浏览器对特定资源的预取（OPTIONS）请求返回结果的缓存时间，单位为秒。
+        maxAgeSeconds: '30',
+      },
+    ];
+    client.putBucketCORS(config.bucket, rules);
+    // .then((res) => {
+    //   console.log('allow cors', res);
+    // });
 
     const date = new Date();
     date.setDate(date.getDate() + 1);
@@ -28,9 +42,9 @@ export class OSSService {
     const formData = await client.calculatePostSignature(policy);
 
     //bucket域名
-    // const host = `http://${config.bucket}.${
-    //   (await client.getBucketLocation()).location
-    // }.aliyuncs.com`.toString();
+    const host = `https://${config.bucket}.${
+      (await client.getBucketLocation(config.bucket)).location
+    }.aliyuncs.com`.toString();
 
     //回调
     // const callback = {
@@ -46,9 +60,8 @@ export class OSSService {
       policy: formData.policy,
       signature: formData.Signature,
       accessId: formData.OSSAccessKeyId,
-      // host,
+      host,
       // callback: Buffer.from(JSON.stringify(callback)).toString('base64'),
-      // dir: config.dir,
     };
 
     return params;

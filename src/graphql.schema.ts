@@ -21,6 +21,7 @@ export class OSSParams {
     policy: string;
     signature: string;
     accessId: string;
+    host: string;
 }
 
 export abstract class IQuery {
