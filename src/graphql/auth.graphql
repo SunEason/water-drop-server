@@ -1,0 +1,13 @@
+"验证码返回类型"
+type Message {
+  expire: String! 
+  policy: String!
+  signature: String!
+  accessId: String!
+  host: String!
+}
+
+type Mutation {
+  "发送验证码" 
+  sendMessage(tel: String!): Message
+}

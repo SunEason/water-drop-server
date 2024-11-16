@@ -16,6 +16,24 @@ export class UserInput {
     tel?: Nullable<string>;
 }
 
+export class Message {
+    expire: string;
+    policy: string;
+    signature: string;
+    accessId: string;
+    host: string;
+}
+
+export abstract class IMutation {
+    abstract sendMessage(tel: string): Nullable<Message> | Promise<Nullable<Message>>;
+
+    abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract removeUser(id: string): Nullable<User> | Promise<Nullable<User>>;
+}
+
 export class OSSParams {
     expire: string;
     policy: string;
@@ -41,14 +59,6 @@ export class User {
     tel?: Nullable<string>;
     createTime: DateTime;
     updateTime: DateTime;
-}
-
-export abstract class IMutation {
-    abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract removeUser(id: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export type DateTime = Date;
