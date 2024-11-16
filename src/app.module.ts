@@ -3,11 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
-import { UserModule } from './user/user.module';
+import { UserModule } from './modules/user/user.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { CommonModule } from './common/common.module';
-import { OSSModule } from './oss/oss.module';
+import { CommonModule } from './modules/common/common.module';
+import { OSSModule } from './modules/oss/oss.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ConfigModule } from '@nestjs/config';
     UserModule,
     CommonModule,
     OSSModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
