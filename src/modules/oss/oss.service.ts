@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import * as OSS from 'ali-oss';
 import * as dayjs from 'dayjs';
 import { OSSParams } from 'src/graphql.schema';
-import { config } from 'oss.config';
+import { config as aliyunConfig } from 'aliyun.config';
 
 @Injectable()
 export class OSSService {
   async getSignature(): Promise<OSSParams> {
-    const client = new OSS(config);
+    const client = new OSS(aliyunConfig);
 
     const rules: OSS.CORSRule[] = [
       {
@@ -24,7 +24,7 @@ export class OSSService {
         maxAgeSeconds: '30',
       },
     ];
-    client.putBucketCORS(config.bucket, rules);
+    client.putBucketCORS(aliyunConfig.bucket, rules);
     // .then((res) => {
     //   console.log('allow cors', res);
     // });
@@ -42,13 +42,13 @@ export class OSSService {
     const formData = await client.calculatePostSignature(policy);
 
     //bucket域名
-    const host = `https://${config.bucket}.${
-      (await client.getBucketLocation(config.bucket)).location
+    const host = `https://${aliyunConfig.bucket}.${
+      (await client.getBucketLocation(aliyunConfig.bucket)).location
     }.aliyuncs.com`.toString();
 
     //回调
     // const callback = {
-    //   callbackUrl: config.callbackUrl,
+    //   callbackUrl: aliyunConfig.callbackUrl,
     //   callbackBody:
     //     'filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}',
     //   callbackBodyType: 'application/x-www-form-urlencoded',

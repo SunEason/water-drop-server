@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import Dysmsapi20170525, * as $Dysmsapi20170525 from '@alicloud/dysmsapi20170525';
 import * as $OpenApi from '@alicloud/openapi-client';
 import * as $Util from '@alicloud/tea-util';
+import { getRandomCode } from 'src/utils/random';
+import { config as aliyunConfig } from 'aliyun.config';
 // import OpenApi, * as $OpenApi from '@alicloud/openapi-client';
 // import Util, * as $Util from '@alicloud/tea-util';
 
@@ -12,9 +14,9 @@ export class AuthService {
     // 建议使用更安全的 STS 方式，更多鉴权访问方式请参见：https://help.aliyun.com/document_detail/378664.html。
     const config = new $OpenApi.Config({
       // 必填，请确保代码运行环境设置了环境变量 ALIBABA_CLOUD_ACCESS_KEY_ID。
-      accessKeyId: process.env['ALIBABA_CLOUD_ACCESS_KEY_ID'],
+      accessKeyId: aliyunConfig.accessKeyId,
       // 必填，请确保代码运行环境设置了环境变量 ALIBABA_CLOUD_ACCESS_KEY_SECRET。
-      accessKeySecret: process.env['ALIBABA_CLOUD_ACCESS_KEY_SECRET'],
+      accessKeySecret: aliyunConfig.accessKeySecret,
     });
     // Endpoint 请参考 https://api.aliyun.com/product/Dysmsapi
     config.endpoint = `dysmsapi.aliyuncs.com`;
@@ -22,14 +24,13 @@ export class AuthService {
   }
 
   async sendMessage(tel: string) {
-    // todo
-    console.log(tel);
     const client = this.createClient();
+    const code = getRandomCode();
     const sendSmsRequest = new $Dysmsapi20170525.SendSmsRequest({
-      signName: '水滴',
-      templateCode: 'SMS_475140218',
+      signName: aliyunConfig.signName,
+      templateCode: aliyunConfig.templateCode,
       phoneNumbers: tel,
-      templateParam: '{"code":"1234"}',
+      templateParam: `{"code":"${code}"}`,
     });
     const runtime = new $Util.RuntimeOptions({});
     try {
@@ -42,6 +43,6 @@ export class AuthService {
       // 诊断地址
       console.log(error.data['Recommend']);
     }
-    return '1234';
+    return code;
   }
 }

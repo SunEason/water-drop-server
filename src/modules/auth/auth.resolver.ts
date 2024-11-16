@@ -6,7 +6,7 @@ export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @Mutation('sendMessage')
-  async sendMessage(@Args('tel') tel: string) {
+  async sendMessage(@Args('tel') tel: string): Promise<string> {
     return this.authService.sendMessage(tel);
   }
 }
