@@ -59,8 +59,9 @@ export class AuthService {
     if (!user.code || !user.codeCreateTime) return false;
     if (user.codeCreateTime.getTime() + 1000 * 60 * 60 < new Date().getTime())
       return false;
-    if (user.code === code) {
-      return true;
+    if (user.code !== code) {
+      return false;
     }
+    return true;
   }
 }
