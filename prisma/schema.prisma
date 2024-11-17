@@ -17,9 +17,11 @@ model User {
   id         String   @id @default(uuid())
   name       String
   password   String
-  account    String
+  tel        String  @unique
+  account    String?
+  code       String?
   desc       String?
-  tel        String?  @unique
   createTime DateTime @default(now())
   updateTime DateTime @updatedAt
+  codeCreateTime DateTime?
 }

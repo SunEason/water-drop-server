@@ -4,9 +4,9 @@ type User {
   id: String!
   name: String!
   password: String!
-  account: String!
+  tel: String!
   desc: String
-  tel: String
+  account: String
   createTime: DateTime!
   updateTime: DateTime!
 }
@@ -14,9 +14,9 @@ type User {
 input UserInput {
   name: String!
   password: String!
-  account: String!
+  tel: String!
   desc: String
-  tel: String
+  account: String
 }
 
 type Query {

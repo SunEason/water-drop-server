@@ -28,7 +28,7 @@ export class UserService {
     }
   }
 
-  async createUser(user: UserInput) {
+  async createUser(user: UserInput & { code: string }) {
     try {
       const data = await this.prisma.user.create({
         data: user,
@@ -65,4 +65,36 @@ export class UserService {
       throw new Error(err);
     }
   }
+
+  // #region auth
+  async findUserByTel(tel: string) {
+    try {
+      const data = await this.prisma.user.findUnique({
+        where: {
+          tel: tel,
+        },
+      });
+      return data;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async updateUserCode(id: string, code: string) {
+    try {
+      const data = await this.prisma.user.update({
+        where: {
+          id: id,
+        },
+        data: {
+          code: code,
+          codeCreateTime: new Date(),
+        },
+      });
+      return data;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+  // #endregion
 }

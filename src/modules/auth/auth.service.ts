@@ -1,30 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import Dysmsapi20170525, * as $Dysmsapi20170525 from '@alicloud/dysmsapi20170525';
-import * as $OpenApi from '@alicloud/openapi-client';
+import * as $Dysmsapi20170525 from '@alicloud/dysmsapi20170525';
 import * as $Util from '@alicloud/tea-util';
 import { getRandomCode } from 'src/utils/random';
 import { config as aliyunConfig } from 'aliyun.config';
+import { UserService } from '../user/user.service';
+import { getClient } from 'src/const/msgClient';
 // import OpenApi, * as $OpenApi from '@alicloud/openapi-client';
 // import Util, * as $Util from '@alicloud/tea-util';
 
 @Injectable()
 export class AuthService {
-  createClient(): Dysmsapi20170525 {
-    // 工程代码泄露可能会导致 AccessKey 泄露，并威胁账号下所有资源的安全性。以下代码示例仅供参考。
-    // 建议使用更安全的 STS 方式，更多鉴权访问方式请参见：https://help.aliyun.com/document_detail/378664.html。
-    const config = new $OpenApi.Config({
-      // 必填，请确保代码运行环境设置了环境变量 ALIBABA_CLOUD_ACCESS_KEY_ID。
-      accessKeyId: aliyunConfig.accessKeyId,
-      // 必填，请确保代码运行环境设置了环境变量 ALIBABA_CLOUD_ACCESS_KEY_SECRET。
-      accessKeySecret: aliyunConfig.accessKeySecret,
-    });
-    // Endpoint 请参考 https://api.aliyun.com/product/Dysmsapi
-    config.endpoint = `dysmsapi.aliyuncs.com`;
-    return new Dysmsapi20170525(config);
-  }
+  constructor(private readonly userService: UserService) {}
 
   async sendMessage(tel: string) {
-    const client = this.createClient();
+    const user = await this.userService.findUserByTel(tel);
+    if (user) {
+      const diffTime = new Date().getTime() - user.codeCreateTime.getTime();
+      if (diffTime < 60 * 1000) {
+        return false;
+      }
+    }
+    const client = getClient();
     const code = getRandomCode();
     const sendSmsRequest = new $Dysmsapi20170525.SendSmsRequest({
       signName: aliyunConfig.signName,
@@ -36,6 +32,20 @@ export class AuthService {
     try {
       // 复制代码运行请自行打印 API 的返回值
       await client.sendSmsWithOptions(sendSmsRequest, runtime);
+      if (user) {
+        const data = await this.userService.updateUserCode(user.id, code);
+        if (data) return true;
+        else return false;
+      }
+      const data = await this.userService.createUser({
+        name: 'user',
+        password: 'user',
+        account: '',
+        tel: tel,
+        code: code,
+      });
+      if (data) return true;
+      else return false;
     } catch (error) {
       // 此处仅做打印展示，请谨慎对待异常处理，在工程项目中切勿直接忽略异常。
       // 错误 message
@@ -43,6 +53,5 @@ export class AuthService {
       // 诊断地址
       console.log(error.data['Recommend']);
     }
-    return code;
   }
 }

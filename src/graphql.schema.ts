@@ -11,13 +11,13 @@
 export class UserInput {
     name: string;
     password: string;
-    account: string;
+    tel: string;
     desc?: Nullable<string>;
-    tel?: Nullable<string>;
+    account?: Nullable<string>;
 }
 
 export abstract class IQuery {
-    abstract sendMessage(tel: string): Nullable<string> | Promise<Nullable<string>>;
+    abstract sendMessage(tel: string): Nullable<boolean> | Promise<Nullable<boolean>>;
 
     abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
 
@@ -38,9 +38,9 @@ export class User {
     id: string;
     name: string;
     password: string;
-    account: string;
+    tel: string;
     desc?: Nullable<string>;
-    tel?: Nullable<string>;
+    account?: Nullable<string>;
     createTime: DateTime;
     updateTime: DateTime;
 }
