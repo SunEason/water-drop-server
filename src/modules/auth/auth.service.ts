@@ -13,11 +13,13 @@ export class AuthService {
   constructor(private readonly userService: UserService) {}
 
   async sendMessage(tel: string) {
-    const user = await this.userService.findUserByTel(tel);
+    let user = await this.userService.findUserByTel(tel);
     if (user) {
-      const diffTime = new Date().getTime() - user.codeCreateTime.getTime();
-      if (diffTime < 60 * 1000) {
-        return false;
+      if (user.codeCreateTime) {
+        const diffTime = new Date().getTime() - user.codeCreateTime.getTime();
+        if (diffTime < 60 * 1000) {
+          return false;
+        }
       }
     }
     const client = getClient();
@@ -32,18 +34,14 @@ export class AuthService {
     try {
       // 复制代码运行请自行打印 API 的返回值
       await client.sendSmsWithOptions(sendSmsRequest, runtime);
-      if (user) {
-        const data = await this.userService.updateUserCode(user.id, code);
-        if (data) return true;
-        else return false;
+      if (!user) {
+        user = await this.userService.createUser({
+          name: 'user',
+          password: 'user',
+          tel: tel,
+        });
       }
-      const data = await this.userService.createUser({
-        name: 'user',
-        password: 'user',
-        tel: tel,
-        code: code,
-        codeCreateTime: new Date(),
-      });
+      const data = await this.userService.updateUserCode(user.id, code);
       if (data) return true;
       else return false;
     } catch (error) {
@@ -59,7 +57,7 @@ export class AuthService {
     const user = await this.userService.findUserByTel(tel);
     if (!user) return false;
     if (!user.code || !user.codeCreateTime) return false;
-    if (user.codeCreateTime.getTime() + 1000 * 60 * 5 < new Date().getTime())
+    if (user.codeCreateTime.getTime() + 1000 * 60 * 60 < new Date().getTime())
       return false;
     if (user.code === code) {
       return true;
