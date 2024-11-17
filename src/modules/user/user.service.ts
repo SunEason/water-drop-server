@@ -28,7 +28,7 @@ export class UserService {
     }
   }
 
-  async createUser(user: UserInput & { code: string }) {
+  async createUser(user: UserInput & { code?: string; codeCreateTime?: Date }) {
     try {
       const data = await this.prisma.user.create({
         data: user,

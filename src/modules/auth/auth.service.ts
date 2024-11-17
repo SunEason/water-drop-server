@@ -40,9 +40,9 @@ export class AuthService {
       const data = await this.userService.createUser({
         name: 'user',
         password: 'user',
-        account: '',
         tel: tel,
         code: code,
+        codeCreateTime: new Date(),
       });
       if (data) return true;
       else return false;
@@ -52,6 +52,17 @@ export class AuthService {
       console.log(error.message);
       // 诊断地址
       console.log(error.data['Recommend']);
+    }
+  }
+
+  async login(tel: string, code: string) {
+    const user = await this.userService.findUserByTel(tel);
+    if (!user) return false;
+    if (!user.code || !user.codeCreateTime) return false;
+    if (user.codeCreateTime.getTime() + 1000 * 60 * 5 < new Date().getTime())
+      return false;
+    if (user.code === code) {
+      return true;
     }
   }
 }

@@ -9,4 +9,9 @@ export class AuthResolver {
   async sendMessage(@Args('tel') tel: string) {
     return this.authService.sendMessage(tel);
   }
+
+  @Query('login')
+  async login(@Args('tel') tel: string, @Args('code') code: string) {
+    return this.authService.login(tel, code);
+  }
 }

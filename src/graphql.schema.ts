@@ -19,6 +19,8 @@ export class UserInput {
 export abstract class IQuery {
     abstract sendMessage(tel: string): Nullable<boolean> | Promise<Nullable<boolean>>;
 
+    abstract login(tel: string, code: string): Nullable<boolean> | Promise<Nullable<boolean>>;
+
     abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
 
     abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;

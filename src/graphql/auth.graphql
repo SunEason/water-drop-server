@@ -1,4 +1,6 @@
 type Query {
   "发送验证码" 
   sendMessage(tel: String!): Boolean
+  "登录"
+  login(tel: String!, code: String!): Boolean
 }
