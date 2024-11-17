@@ -3,8 +3,10 @@
     "alicloud",
     "aliyun",
     "aliyuncs",
+    "codegen",
     "Dysmsapi",
     "endregion",
+    "nestjs",
     "openapi"
   ]
 }

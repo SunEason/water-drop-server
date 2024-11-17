@@ -16,22 +16,14 @@ export class UserInput {
     tel?: Nullable<string>;
 }
 
-export class Message {
-    expire: string;
-    policy: string;
-    signature: string;
-    accessId: string;
-    host: string;
-}
+export abstract class IQuery {
+    abstract sendMessage(tel: string): Nullable<string> | Promise<Nullable<string>>;
 
-export abstract class IMutation {
-    abstract sendMessage(tel: string): Nullable<Message> | Promise<Nullable<Message>>;
+    abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
 
-    abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
+    abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
 
-    abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract removeUser(id: string): Nullable<User> | Promise<Nullable<User>>;
+    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class OSSParams {
@@ -40,14 +32,6 @@ export class OSSParams {
     signature: string;
     accessId: string;
     host: string;
-}
-
-export abstract class IQuery {
-    abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
-
-    abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
-
-    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class User {
@@ -59,6 +43,14 @@ export class User {
     tel?: Nullable<string>;
     createTime: DateTime;
     updateTime: DateTime;
+}
+
+export abstract class IMutation {
+    abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract removeUser(id: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export type DateTime = Date;

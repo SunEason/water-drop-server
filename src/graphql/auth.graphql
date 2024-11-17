@@ -1,4 +1,4 @@
-type Mutation {
+type Query {
   "发送验证码" 
   sendMessage(tel: String!): String
 }
