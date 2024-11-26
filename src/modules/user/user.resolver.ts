@@ -4,8 +4,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from 'src/graphql.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../common/guards/auth.guard';
 
 @Resolver()
+@UseGuards(GqlAuthGuard)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 

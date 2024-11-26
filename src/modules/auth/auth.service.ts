@@ -5,12 +5,14 @@ import { getRandomCode } from 'src/utils/random';
 import { config as aliyunConfig } from 'aliyun.config';
 import { UserService } from '../user/user.service';
 import { getClient } from 'src/const/msgClient';
-// import OpenApi, * as $OpenApi from '@alicloud/openapi-client';
-// import Util, * as $Util from '@alicloud/tea-util';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async sendMessage(tel: string) {
     let user = await this.userService.findUserByTel(tel);
@@ -57,11 +59,12 @@ export class AuthService {
     const user = await this.userService.findUserByTel(tel);
     if (!user) return false;
     if (!user.code || !user.codeCreateTime) return false;
-    if (user.codeCreateTime.getTime() + 1000 * 60 * 60 < new Date().getTime())
-      return false;
+    // if (user.codeCreateTime.getTime() + 1000 * 60 * 60 < new Date().getTime())
+    //   return false;
     if (user.code !== code) {
       return false;
     }
-    return true;
+    const token = this.jwtService.sign({ id: user.id });
+    return token;
   }
 }
