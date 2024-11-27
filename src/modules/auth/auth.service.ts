@@ -57,14 +57,16 @@ export class AuthService {
 
   async login(tel: string, code: string) {
     const user = await this.userService.findUserByTel(tel);
-    if (!user) return false;
-    if (!user.code || !user.codeCreateTime) return false;
+    if (!user) return { success: false };
+    if (!user.code || !user.codeCreateTime) return { success: false };
     // if (user.codeCreateTime.getTime() + 1000 * 60 * 60 < new Date().getTime())
     //   return false;
-    if (user.code !== code) {
-      return false;
-    }
+    if (user.code !== code) return { success: false };
+
     const token = this.jwtService.sign({ id: user.id });
-    return token;
+    return {
+      success: true,
+      token,
+    };
   }
 }

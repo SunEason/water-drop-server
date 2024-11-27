@@ -1,6 +1,11 @@
-type Query {
+type AuthLogin {
+  "用户id"
+  success: Boolean!
+  token: String
+}
+type Mutation {
   "发送验证码" 
   sendMessage(tel: String!): Boolean
   "登录"
-  login(tel: String!, code: String!): Boolean
+  login(tel: String!, code: String!): AuthLogin
 }
