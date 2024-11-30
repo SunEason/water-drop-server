@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import * as $Dysmsapi20170525 from '@alicloud/dysmsapi20170525';
 import * as $Util from '@alicloud/tea-util';
 import { getRandomCode } from 'src/utils/random';
-import { config as aliyunConfig } from 'aliyun.config';
 import { UserService } from '../user/user.service';
 import { getClient } from 'src/const/msgClient';
 import { JwtService } from '@nestjs/jwt';
@@ -25,17 +24,21 @@ export class AuthService {
       }
     }
     const client = getClient();
+
     const code = getRandomCode();
-    const sendSmsRequest = new $Dysmsapi20170525.SendSmsRequest({
-      signName: aliyunConfig.signName,
-      templateCode: aliyunConfig.templateCode,
+    const config = {
+      signName: process.env.ALIYUN_SIGN_NAME,
+      templateCode: process.env.ALIYUN_TEMPLATE_CODE,
       phoneNumbers: tel,
       templateParam: `{"code":"${code}"}`,
-    });
+    };
+
+    const sendSmsRequest = new $Dysmsapi20170525.SendSmsRequest(config);
     const runtime = new $Util.RuntimeOptions({});
     try {
       // 复制代码运行请自行打印 API 的返回值
       await client.sendSmsWithOptions(sendSmsRequest, runtime);
+
       if (!user) {
         user = await this.userService.createUser({
           name: 'user',

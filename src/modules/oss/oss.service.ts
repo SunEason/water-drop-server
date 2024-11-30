@@ -2,11 +2,17 @@ import { Injectable } from '@nestjs/common';
 import * as OSS from 'ali-oss';
 import * as dayjs from 'dayjs';
 import { OSSParams } from 'src/graphql.schema';
-import { config as aliyunConfig } from 'aliyun.config';
-
 @Injectable()
 export class OSSService {
   async getSignature(): Promise<OSSParams> {
+    const aliyunConfig = {
+      accessKeyId: process.env.ALIYUN_ACCESS_KEY_ID,
+      accessKeySecret: process.env.ALIYUN_ACCESS_KEY_SECRET,
+      bucket: process.env.ALIYUN_BUCKET,
+      region: process.env.ALIYUN_REGION,
+    };
+    console.log(aliyunConfig);
+
     const client = new OSS(aliyunConfig);
 
     const rules: OSS.CORSRule[] = [
