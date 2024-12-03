@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserDto } from './dto/create-user.dto';
 
 import { User } from 'src/graphql.schema';
@@ -20,6 +20,12 @@ export class UserResolver {
   @Query('user')
   async user(@Args('id') id: string): Promise<User> {
     if (!id || !id.length) throw new Error('Id is required');
+    return this.userService.findUserById(id);
+  }
+
+  @Query('getUserInfo')
+  async getUserInfo(@Context() context: any): Promise<User> {
+    const id = context.req.user.id;
     return this.userService.findUserById(id);
   }
 

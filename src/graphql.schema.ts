@@ -47,6 +47,8 @@ export abstract class IQuery {
     abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
 
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract getUserInfo(): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class User {

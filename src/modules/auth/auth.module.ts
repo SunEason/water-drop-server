@@ -10,7 +10,7 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60s' }, // 1 day
+      signOptions: { expiresIn: 60 * 60 * 24 * 30 }, // 1 day
     }),
     UserModule,
     PrismaModule,

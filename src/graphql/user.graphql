@@ -22,6 +22,7 @@ input UserInput {
 type Query {
   users: [User!]
   user(id: String!): User
+  getUserInfo: User
 }
 
 type Mutation {
