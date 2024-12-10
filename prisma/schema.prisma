@@ -19,6 +19,7 @@ model User {
   password   String
   tel        String  @unique
   account    String?
+  avatar     String?
   code       String?
   desc       String?
   createTime DateTime @default(now())

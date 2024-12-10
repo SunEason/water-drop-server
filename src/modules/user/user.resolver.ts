@@ -29,6 +29,16 @@ export class UserResolver {
     return this.userService.findUserById(id);
   }
 
+  @Mutation('updateUserInfo')
+  async updateUserInfo(
+    @Args('id') id: string,
+    @Args('input') user: UpdateUserDto,
+  ): Promise<User> {
+    const res = await this.userService.updateUser(id, user);
+    if (!res) throw new Error('User not found');
+    return res;
+  }
+
   @Mutation('createUser')
   async createUser(@Args('input') user: CreateUserDto): Promise<User> {
     return this.userService.createUser(user);

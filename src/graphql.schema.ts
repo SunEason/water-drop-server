@@ -16,6 +16,12 @@ export class UserInput {
     account?: Nullable<string>;
 }
 
+export class UserUpdateInput {
+    name?: Nullable<string>;
+    desc?: Nullable<string>;
+    avatar?: Nullable<string>;
+}
+
 export class AuthLogin {
     success: boolean;
     token?: Nullable<string>;
@@ -31,6 +37,8 @@ export abstract class IMutation {
     abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
 
     abstract removeUser(id: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateUserInfo(id: string, input: UserUpdateInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class OSSParams {
@@ -58,6 +66,7 @@ export class User {
     tel: string;
     desc?: Nullable<string>;
     account?: Nullable<string>;
+    avatar?: Nullable<string>;
     createTime: DateTime;
     updateTime: DateTime;
 }
