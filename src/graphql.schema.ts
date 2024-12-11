@@ -47,6 +47,7 @@ export class OSSParams {
     signature: string;
     accessId: string;
     host: string;
+    dir: string;
 }
 
 export abstract class IQuery {

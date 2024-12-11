@@ -67,6 +67,7 @@ export class OSSService {
       signature: formData.Signature,
       accessId: formData.OSSAccessKeyId,
       host,
+      dir: 'images',
       // callback: Buffer.from(JSON.stringify(callback)).toString('base64'),
     };
 

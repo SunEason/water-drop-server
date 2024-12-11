@@ -4,6 +4,7 @@ type OSSParams {
   signature: String!
   accessId: String!
   host: String!
+  dir: String!
 }
 
 type Query {
