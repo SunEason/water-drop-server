@@ -15,6 +15,8 @@ datasource db {
 
 model User {
   id         String   @id @default(uuid())
+  createTime DateTime @default(now())
+  updateTime DateTime @updatedAt
   name       String
   password   String
   tel        String  @unique
@@ -22,7 +24,19 @@ model User {
   avatar     String?
   code       String?
   desc       String?
+  codeCreateTime DateTime?
+}
+
+model Student {
+  id         String   @id @default(uuid())
   createTime DateTime @default(now())
   updateTime DateTime @updatedAt
+  name       String
+  password   String
+  tel        String  @unique
+  account    String?
+  avatar     String?
+  code       String?
+  desc       String?
   codeCreateTime DateTime?
 }

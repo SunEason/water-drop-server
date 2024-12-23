@@ -1,0 +1,28 @@
+input pageStudentInput {
+  page: Int
+  limit: Int
+}
+
+type Student {
+  id: ID!
+  name: String!
+  email: String!
+  age: Int!
+  gender: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Students {
+  students: [Student]
+  page: {
+    total: Int
+    page: Int
+    limit: Int
+  }
+}
+
+
+type Query {
+  students(page: pageInput): Students
+}
