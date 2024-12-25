@@ -8,6 +8,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export class PageInput {
+    page: number;
+    limit: number;
+}
+
+export class PageStudentInput {
+    name?: Nullable<string>;
+    pageInput: PageInput;
+}
+
 export class UserInput {
     name: string;
     password: string;
@@ -20,6 +30,12 @@ export class UserUpdateInput {
     name?: Nullable<string>;
     desc?: Nullable<string>;
     avatar?: Nullable<string>;
+}
+
+export class PageInfo {
+    total: number;
+    page: number;
+    limit: number;
 }
 
 export class AuthLogin {
@@ -53,11 +69,31 @@ export class OSSParams {
 export abstract class IQuery {
     abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
 
+    abstract students(input: PageStudentInput): Nullable<Students> | Promise<Nullable<Students>>;
+
     abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
 
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
 
     abstract getUserInfo(): Nullable<User> | Promise<Nullable<User>>;
+}
+
+export class Student {
+    id: string;
+    name: string;
+    password: string;
+    tel: string;
+    desc?: Nullable<string>;
+    account?: Nullable<string>;
+    avatar?: Nullable<string>;
+    createTime: DateTime;
+    updateTime: DateTime;
+}
+
+export class Students {
+    students?: Nullable<Nullable<Student>[]>;
+    pageInfo?: Nullable<PageInfo>;
+    error?: Nullable<string>;
 }
 
 export class User {

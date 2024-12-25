@@ -1,28 +1,28 @@
-input pageStudentInput {
-  page: Int
-  limit: Int
-}
+scalar DateTime
 
 type Student {
-  id: ID!
+  id: String!
   name: String!
-  email: String!
-  age: Int!
-  gender: String!
-  createdAt: String!
-  updatedAt: String!
+  password: String!
+  tel: String!
+  desc: String
+  account: String
+  avatar: String
+  createTime: DateTime!
+  updateTime: DateTime!
 }
 
 type Students {
   students: [Student]
-  page: {
-    total: Int
-    page: Int
-    limit: Int
-  }
+  pageInfo: pageInfo
+  error: String
 }
 
+input pageStudentInput {
+  name: String
+  pageInput: pageInput!
+}
 
 type Query {
-  students(page: pageInput): Students
+  students(input: pageStudentInput!): Students
 }

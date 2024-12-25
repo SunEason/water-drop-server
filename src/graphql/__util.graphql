@@ -1,0 +1,11 @@
+type pageInfo {
+  total: Int!
+  page: Int!
+  limit: Int!
+}
+
+input pageInput {
+  page: Int!
+  limit: Int!
+}
+
