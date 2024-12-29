@@ -40,3 +40,30 @@ model Student {
   desc       String?
   codeCreateTime DateTime?
 }
+
+model Organization {
+  id         String   @id @default(uuid())
+  createTime DateTime @default(now())
+  updateTime DateTime @updatedAt
+  businessLicense String
+  identityCardFrontImg String
+  identityCardBackImg String
+  // 以逗号分割 
+  tags       String? @db.Text
+  description String? @db.Text
+  name       String?
+  logo      String?
+  address     String?
+  longitude    String?
+  latitude   String?
+  tel String?  @unique
+  images Image[]
+}
+
+model Image {
+  id         String   @id @default(uuid())
+  url        String
+  remark     String?
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id])
+}
