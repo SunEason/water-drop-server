@@ -13,6 +13,25 @@ export class PageInput {
     limit: number;
 }
 
+export class PageOrganizationInput {
+    name?: Nullable<string>;
+    pageInput: PageInput;
+}
+
+export class MutationOrganizationInput {
+    name: string;
+    businessLicense: string;
+    identityCardFrontImg: string;
+    identityCardBackImg: string;
+    tags?: Nullable<string>;
+    description?: Nullable<string>;
+    logo?: Nullable<string>;
+    address?: Nullable<string>;
+    longitude?: Nullable<string>;
+    latitude?: Nullable<string>;
+    tel?: Nullable<string>;
+}
+
 export class PageStudentInput {
     name?: Nullable<string>;
     pageInput: PageInput;
@@ -38,6 +57,11 @@ export class PageInfo {
     limit: number;
 }
 
+export class Response {
+    success: boolean;
+    message?: Nullable<string>;
+}
+
 export class AuthLogin {
     success: boolean;
     token?: Nullable<string>;
@@ -48,6 +72,12 @@ export abstract class IMutation {
 
     abstract login(tel: string, code: string): Nullable<AuthLogin> | Promise<Nullable<AuthLogin>>;
 
+    abstract createOrganization(input: MutationOrganizationInput): Nullable<OrganizationResponse> | Promise<Nullable<OrganizationResponse>>;
+
+    abstract updateOrganization(id: string, input: MutationOrganizationInput): Nullable<OrganizationResponse> | Promise<Nullable<OrganizationResponse>>;
+
+    abstract removeOrganization(id: string): Nullable<Response> | Promise<Nullable<Response>>;
+
     abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
 
     abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
@@ -57,16 +87,46 @@ export abstract class IMutation {
     abstract updateUserInfo(id: string, input: UserUpdateInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
-export class OSSParams {
-    expire: string;
-    policy: string;
-    signature: string;
-    accessId: string;
-    host: string;
-    dir: string;
+export class Image {
+    id?: Nullable<string>;
+    url?: Nullable<string>;
+    remark?: Nullable<string>;
+    organizationId?: Nullable<string>;
+}
+
+export class Organization {
+    createTime: DateTime;
+    updateTime: DateTime;
+    id: string;
+    businessLicense: string;
+    identityCardFrontImg: string;
+    identityCardBackImg: string;
+    tags?: Nullable<string>;
+    description?: Nullable<string>;
+    name?: Nullable<string>;
+    logo?: Nullable<string>;
+    address?: Nullable<string>;
+    longitude?: Nullable<string>;
+    latitude?: Nullable<string>;
+    tel?: Nullable<string>;
+}
+
+export class PageOrganization {
+    organization?: Nullable<Nullable<Student>[]>;
+    pageInfo?: Nullable<PageInfo>;
+    response: Response;
+}
+
+export class OrganizationResponse {
+    organization?: Nullable<Organization>;
+    response: Response;
 }
 
 export abstract class IQuery {
+    abstract organizations(input?: Nullable<PageOrganizationInput>): Nullable<PageOrganization> | Promise<Nullable<PageOrganization>>;
+
+    abstract getOrganization(id: string): Nullable<OrganizationResponse> | Promise<Nullable<OrganizationResponse>>;
+
     abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
 
     abstract students(input: PageStudentInput): Nullable<Students> | Promise<Nullable<Students>>;
@@ -76,6 +136,15 @@ export abstract class IQuery {
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
 
     abstract getUserInfo(): Nullable<User> | Promise<Nullable<User>>;
+}
+
+export class OSSParams {
+    expire: string;
+    policy: string;
+    signature: string;
+    accessId: string;
+    host: string;
+    dir: string;
 }
 
 export class Student {

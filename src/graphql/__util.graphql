@@ -9,3 +9,7 @@ input pageInput {
   limit: Int!
 }
 
+type Response {
+  success: Boolean!
+  message: String
+}

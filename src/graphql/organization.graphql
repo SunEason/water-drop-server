@@ -1,0 +1,68 @@
+scalar DateTime
+
+type Image {
+  id:         String   
+  url:        String
+  remark:     String
+  organizationId: String
+}
+
+type Organization {
+  createTime: DateTime!
+  updateTime: DateTime!
+  id:         String!
+  businessLicense: String!
+  identityCardFrontImg: String!
+  identityCardBackImg: String!
+  tags:       String
+  description: String
+  name:       String
+  logo:      String
+  address:     String
+  longitude:    String
+  latitude:   String
+  tel: String
+  # images: Image[]
+}
+
+
+input pageOrganizationInput {
+  name: String
+  pageInput: pageInput!
+}
+
+input MutationOrganizationInput {
+  name:       String!
+  businessLicense: String!
+  identityCardFrontImg: String!
+  identityCardBackImg: String!
+  tags:       String
+  description: String
+  logo:      String
+  address:     String
+  longitude:    String
+  latitude: String
+  tel: String
+}
+
+type pageOrganization {
+  organization: [Student]
+  pageInfo: pageInfo
+  response: Response!
+}
+
+type OrganizationResponse {
+  organization: Organization
+  response: Response!
+}
+
+type Query {
+  organizations(input: pageOrganizationInput): pageOrganization
+  getOrganization(id: String!): OrganizationResponse
+}
+
+type Mutation {
+  createOrganization(input: MutationOrganizationInput!): OrganizationResponse
+  updateOrganization(id: String!, input: MutationOrganizationInput!): OrganizationResponse
+  removeOrganization(id: String!): Response
+}

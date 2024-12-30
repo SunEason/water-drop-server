@@ -10,6 +10,7 @@ import { OSSModule } from './modules/oss/oss.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import { StudentModule } from './modules/student/student.module';
+import { OrganizationModule } from './modules/organization/organization.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { StudentModule } from './modules/student/student.module';
     OSSModule,
     AuthModule,
     StudentModule,
+    OrganizationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
