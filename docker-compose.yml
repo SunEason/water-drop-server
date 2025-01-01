@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13 # 使用 PostgreSQL 13 镜像
+    container_name: water-drop-db # 容器名称
+    environment:
+      POSTGRES_USER: postgres # 数据库用户名
+      POSTGRES_PASSWORD: 361706 # 数据库密码
+      POSTGRES_DB: water-drop # 数据库名称
+    ports:
+      - "5432:5432" # 将容器的 5432 端口映射到主机的 5432 端口
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # 持久化数据存储
+    networks:
+      - water-drop-network
+
+volumes:
+  postgres_data: # 定义数据卷，用于持久化数据库数据
+
+networks:
+  water-drop-network: # 定义网络，用于容器间通信
