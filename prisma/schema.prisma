@@ -57,13 +57,21 @@ model Organization {
   longitude    String?
   latitude   String?
   tel String?  @unique
-  images Image[]
+  deletedAt DateTime? @map("deleted_at")
+  frontImages OrgImage[] @relation("frontImages")
+  roomImages OrgImage[] @relation("roomImages")
+  otherImages OrgImage[] @relation("otherImages")
+  @@index([deletedAt])
 }
 
-model Image {
+model OrgImage {
   id         String   @id @default(uuid())
   url        String
   remark     String?
-  organizationId String
-  organization Organization @relation(fields: [organizationId], references: [id])
+  frontOrgId String?
+  frontOrg Organization? @relation("frontImages",fields: [frontOrgId], references: [id])
+  roomOrgId String?
+  roomOrg Organization? @relation("roomImages",fields: [roomOrgId], references: [id])
+  otherOrgId String?
+  otherOrg Organization? @relation("otherImages",fields: [otherOrgId], references: [id])
 }
