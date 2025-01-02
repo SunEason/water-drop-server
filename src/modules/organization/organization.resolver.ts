@@ -9,6 +9,7 @@ import {
   Response,
 } from 'src/graphql.schema';
 import Res from 'src/utils/response';
+import { CurUserId } from '../common/decorators/current-user.decorator';
 
 @Resolver()
 // @UseGuards(GqlAuthGuard)
@@ -18,7 +19,9 @@ export class OrganizationResolver {
   @Mutation('createOrganization')
   async users(
     @Args('input') input: MutationOrganizationInput,
+    @CurUserId() userId: string,
   ): Promise<OrganizationResponse> {
+    console.log(userId);
     const data = await this.organizationService.createOrganization(input);
     if (!data) return new Res(false, 'create organization failed');
     return {
