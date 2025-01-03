@@ -7,8 +7,25 @@ export class OrganizationService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createOrganization(input: MutationOrganizationInput) {
+    const { frontImages, roomImages, otherImages, ...rest } = input;
     const data = await this.prisma.organization.create({
-      data: input,
+      data: {
+        ...rest,
+        frontImages: {
+          create: frontImages,
+        },
+        roomImages: {
+          create: roomImages,
+        },
+        otherImages: {
+          create: otherImages,
+        },
+      },
+      include: {
+        frontImages: true,
+        roomImages: true,
+        otherImages: true,
+      },
     });
     if (!data) {
       return null;
@@ -17,11 +34,28 @@ export class OrganizationService {
   }
 
   async updateOrganization(id: string, input: MutationOrganizationInput) {
+    const { frontImages, roomImages, otherImages, ...rest } = input;
     const data = await this.prisma.organization.update({
       where: {
         id: id,
       },
-      data: input,
+      data: {
+        ...rest,
+        frontImages: {
+          create: frontImages,
+        },
+        roomImages: {
+          create: roomImages,
+        },
+        otherImages: {
+          create: otherImages,
+        },
+      },
+      include: {
+        frontImages: true,
+        roomImages: true,
+        otherImages: true,
+      },
     });
     if (!data) {
       return null;
@@ -50,6 +84,11 @@ export class OrganizationService {
       where: {
         id: id,
         deletedAt: null,
+      },
+      include: {
+        frontImages: true,
+        roomImages: true,
+        otherImages: true,
       },
     });
 

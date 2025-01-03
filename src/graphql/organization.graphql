@@ -1,12 +1,16 @@
 scalar DateTime
 
-type Image {
-  id:         String   
-  url:        String
+""" Organization Images: front, room, other """
+type OrgImage {
+  id:         String!
+  url:        String!
   remark:     String
-  organizationId: String
+  # frontOrgId String?
+  # roomOrgId String?
+  # otherOrgId String?
 }
 
+""" Organization """
 type Organization {
   createTime: DateTime!
   updateTime: DateTime!
@@ -14,15 +18,17 @@ type Organization {
   businessLicense: String!
   identityCardFrontImg: String!
   identityCardBackImg: String!
+  logo:      String!
   tags:       String
   description: String
   name:       String
-  logo:      String
   address:     String
   longitude:    String
   latitude:   String
   tel: String
-  # images: Image[]
+  frontImages:[OrgImage!] 
+  roomImages:[OrgImage!] 
+  otherImages:[OrgImage!] 
 }
 
 
@@ -31,18 +37,26 @@ input pageOrganizationInput {
   pageInput: pageInput!
 }
 
+input OrgImageInput {
+  url:        String!
+  remark:     String
+}
+
 input MutationOrganizationInput {
   name:       String!
   businessLicense: String!
   identityCardFrontImg: String!
   identityCardBackImg: String!
+  logo:      String!
   tags:       String
   description: String
-  logo:      String
   address:     String
   longitude:    String
   latitude: String
   tel: String
+  frontImages:[OrgImageInput!]
+  roomImages:[OrgImageInput!]
+  otherImages:[OrgImageInput!]
 }
 
 type pageOrganization {

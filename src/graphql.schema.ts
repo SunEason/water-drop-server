@@ -18,18 +18,26 @@ export class PageOrganizationInput {
     pageInput: PageInput;
 }
 
+export class OrgImageInput {
+    url: string;
+    remark?: Nullable<string>;
+}
+
 export class MutationOrganizationInput {
     name: string;
     businessLicense: string;
     identityCardFrontImg: string;
     identityCardBackImg: string;
+    logo: string;
     tags?: Nullable<string>;
     description?: Nullable<string>;
-    logo?: Nullable<string>;
     address?: Nullable<string>;
     longitude?: Nullable<string>;
     latitude?: Nullable<string>;
     tel?: Nullable<string>;
+    frontImages?: Nullable<OrgImageInput[]>;
+    roomImages?: Nullable<OrgImageInput[]>;
+    otherImages?: Nullable<OrgImageInput[]>;
 }
 
 export class PageStudentInput {
@@ -87,11 +95,10 @@ export abstract class IMutation {
     abstract updateUserInfo(id: string, input: UserUpdateInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
-export class Image {
-    id?: Nullable<string>;
-    url?: Nullable<string>;
+export class OrgImage {
+    id: string;
+    url: string;
     remark?: Nullable<string>;
-    organizationId?: Nullable<string>;
 }
 
 export class Organization {
@@ -101,14 +108,17 @@ export class Organization {
     businessLicense: string;
     identityCardFrontImg: string;
     identityCardBackImg: string;
+    logo: string;
     tags?: Nullable<string>;
     description?: Nullable<string>;
     name?: Nullable<string>;
-    logo?: Nullable<string>;
     address?: Nullable<string>;
     longitude?: Nullable<string>;
     latitude?: Nullable<string>;
     tel?: Nullable<string>;
+    frontImages?: Nullable<OrgImage[]>;
+    roomImages?: Nullable<OrgImage[]>;
+    otherImages?: Nullable<OrgImage[]>;
 }
 
 export class PageOrganization {

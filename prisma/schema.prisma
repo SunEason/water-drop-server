@@ -48,11 +48,11 @@ model Organization {
   businessLicense String
   identityCardFrontImg String
   identityCardBackImg String
+  logo      String
   // 以逗号分割 
   tags       String? @db.Text
   description String? @db.Text
   name       String?
-  logo      String?
   address     String?
   longitude    String?
   latitude   String?
