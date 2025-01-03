@@ -1,5 +1,3 @@
-scalar DateTime
-
 """ Organization Images: front, room, other """
 type OrgImage {
   id:         String!
