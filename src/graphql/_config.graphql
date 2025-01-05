@@ -1,17 +1,12 @@
 scalar DateTime
 
-type pageInfo {
-  total: Int!
-  page: Int!
-  limit: Int!
-}
-
 input pageInput {
-  page: Int!
-  limit: Int!
+  current: Int!
+  pageSize: Int!
 }
 
-type Response {
-  success: Boolean!
-  message: String
+type pageInfo {
+  current: Int!
+  pageSize: Int!
+  total: Int!
 }

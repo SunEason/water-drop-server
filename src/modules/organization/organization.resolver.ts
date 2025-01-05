@@ -4,12 +4,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 // import { GqlAuthGuard } from 'src/modules/common/guards/auth.guard';
 import { OrganizationService } from './organization.service';
 import { OrgImageService } from './org-image.service';
-import {
-  MutationOrganizationInput,
-  OrganizationResponse,
-  Response,
-} from 'src/graphql.schema';
-import Res from 'src/utils/response';
+import { MutationOrganizationInput, Organization } from 'src/graphql.schema';
 // import { CurUserId } from '../common/decorators/current-user.decorator';
 
 @Resolver()
@@ -24,44 +19,53 @@ export class OrganizationResolver {
   async users(
     @Args('input') input: MutationOrganizationInput,
     // @CurUserId() userId: string,
-  ): Promise<OrganizationResponse> {
+  ): Promise<Organization> {
     // console.log(userId);
-    const data = await this.organizationService.createOrganization(input);
-    if (!data) return new Res(false, 'create organization failed');
-    return {
-      organization: data,
-      ...new Res(true),
-    };
+    const data = await this.organizationService
+      .createOrganization(input)
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+    if (!data) throw new Error('Organization not created');
+    return data;
   }
 
   @Mutation('updateOrganization')
   async updateOrganization(
     @Args('id') id: string,
     @Args('input') input: MutationOrganizationInput,
-  ): Promise<OrganizationResponse> {
-    await this.orgImageService.deleteOrgImage(id);
-    const data = await this.organizationService.updateOrganization(id, input);
-    if (!data) return new Res(false, 'not fond organization');
-    return {
-      organization: data,
-      ...new Res(true),
-    };
+  ): Promise<Organization> {
+    await this.orgImageService.deleteOrgImage(id).catch((err) => {
+      throw new Error(err.message);
+    });
+    const data = await this.organizationService
+      .updateOrganization(id, input)
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+    if (!data) throw new Error('Organization not updated');
+    return data;
   }
 
   @Mutation('removeOrganization')
-  async removeOrganization(@Args('id') id: string): Promise<Response> {
-    const data = await this.organizationService.removeOrganization(id);
-    if (!data) return new Res(false, 'not fond organization').response;
-    return new Res(true).response;
+  async removeOrganization(@Args('id') id: string): Promise<boolean> {
+    const data = await this.organizationService
+      .removeOrganization(id)
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+    if (!data) throw new Error('Organization not removed');
+    return true;
   }
 
   @Query('getOrganization')
-  async getOrganization(@Args('id') id: string): Promise<OrganizationResponse> {
-    const data = await this.organizationService.getOrganization(id);
-    if (!data) return new Res(false, 'not fond organization');
-    return {
-      organization: data,
-      ...new Res(true),
-    };
+  async getOrganization(@Args('id') id: string): Promise<Organization> {
+    const data = await this.organizationService
+      .getOrganization(id)
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+    if (!data) throw new Error('Organization not found');
+    return data;
   }
 }

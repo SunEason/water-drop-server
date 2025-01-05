@@ -60,21 +60,15 @@ input MutationOrganizationInput {
 type pageOrganization {
   organization: [Student]
   pageInfo: pageInfo
-  response: Response!
-}
-
-type OrganizationResponse {
-  organization: Organization
-  response: Response!
 }
 
 type Query {
   organizations(input: pageOrganizationInput): pageOrganization
-  getOrganization(id: String!): OrganizationResponse
+  getOrganization(id: String!): Organization
 }
 
 type Mutation {
-  createOrganization(input: MutationOrganizationInput!): OrganizationResponse
-  updateOrganization(id: String!, input: MutationOrganizationInput!): OrganizationResponse
-  removeOrganization(id: String!): Response
+  createOrganization(input: MutationOrganizationInput!): Organization
+  updateOrganization(id: String!, input: MutationOrganizationInput!): Organization
+  removeOrganization(id: String!): Boolean
 }

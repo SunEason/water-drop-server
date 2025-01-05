@@ -13,7 +13,6 @@ type Student {
 type Students {
   students: [Student]
   pageInfo: pageInfo
-  error: String
 }
 
 input pageStudentInput {

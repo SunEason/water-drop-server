@@ -14,6 +14,21 @@ export class StudentResolver {
   async users(
     @Args('input') pageStudentInput: PageStudentInput,
   ): Promise<Students> {
-    return this.studentService.pagingStudents(pageStudentInput);
+    const { data, total } = await this.studentService
+      .pagingStudents(pageStudentInput)
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+    if (!data) {
+      throw new Error('Data not found');
+    }
+    return {
+      students: data,
+      pageInfo: {
+        current: pageStudentInput.pageInput.current,
+        pageSize: pageStudentInput.pageInput.pageSize,
+        total: total,
+      },
+    };
   }
 }

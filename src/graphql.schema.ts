@@ -9,8 +9,8 @@
 /* eslint-disable */
 
 export class PageInput {
-    page: number;
-    limit: number;
+    current: number;
+    pageSize: number;
 }
 
 export class PageOrganizationInput {
@@ -60,14 +60,9 @@ export class UserUpdateInput {
 }
 
 export class PageInfo {
+    current: number;
+    pageSize: number;
     total: number;
-    page: number;
-    limit: number;
-}
-
-export class Response {
-    success: boolean;
-    message?: Nullable<string>;
 }
 
 export class AuthLogin {
@@ -80,11 +75,11 @@ export abstract class IMutation {
 
     abstract login(tel: string, code: string): Nullable<AuthLogin> | Promise<Nullable<AuthLogin>>;
 
-    abstract createOrganization(input: MutationOrganizationInput): Nullable<OrganizationResponse> | Promise<Nullable<OrganizationResponse>>;
+    abstract createOrganization(input: MutationOrganizationInput): Nullable<Organization> | Promise<Nullable<Organization>>;
 
-    abstract updateOrganization(id: string, input: MutationOrganizationInput): Nullable<OrganizationResponse> | Promise<Nullable<OrganizationResponse>>;
+    abstract updateOrganization(id: string, input: MutationOrganizationInput): Nullable<Organization> | Promise<Nullable<Organization>>;
 
-    abstract removeOrganization(id: string): Nullable<Response> | Promise<Nullable<Response>>;
+    abstract removeOrganization(id: string): Nullable<boolean> | Promise<Nullable<boolean>>;
 
     abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
 
@@ -124,18 +119,12 @@ export class Organization {
 export class PageOrganization {
     organization?: Nullable<Nullable<Student>[]>;
     pageInfo?: Nullable<PageInfo>;
-    response: Response;
-}
-
-export class OrganizationResponse {
-    organization?: Nullable<Organization>;
-    response: Response;
 }
 
 export abstract class IQuery {
     abstract organizations(input?: Nullable<PageOrganizationInput>): Nullable<PageOrganization> | Promise<Nullable<PageOrganization>>;
 
-    abstract getOrganization(id: string): Nullable<OrganizationResponse> | Promise<Nullable<OrganizationResponse>>;
+    abstract getOrganization(id: string): Nullable<Organization> | Promise<Nullable<Organization>>;
 
     abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
 
@@ -172,7 +161,6 @@ export class Student {
 export class Students {
     students?: Nullable<Nullable<Student>[]>;
     pageInfo?: Nullable<PageInfo>;
-    error?: Nullable<string>;
 }
 
 export class User {
