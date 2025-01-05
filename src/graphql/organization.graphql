@@ -30,7 +30,7 @@ type Organization {
 }
 
 
-input pageOrganizationInput {
+input PageOrganizationInput {
   name: String
   pageInput: pageInput!
 }
@@ -57,13 +57,13 @@ input MutationOrganizationInput {
   otherImages:[OrgImageInput!]
 }
 
-type pageOrganization {
-  organization: [Student]
-  pageInfo: pageInfo
+type PageOrganization {
+  organizations: [Organization!]
+  pageInfo: pageInfo!
 }
 
 type Query {
-  organizations(input: pageOrganizationInput): pageOrganization
+  pageOrganization(input: PageOrganizationInput): PageOrganization
   getOrganization(id: String!): Organization
 }
 

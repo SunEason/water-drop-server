@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { MutationOrganizationInput } from 'src/graphql.schema';
+import {
+  MutationOrganizationInput,
+  PageOrganizationInput,
+} from 'src/graphql.schema';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
+import pagegen from 'src/utils/pagegen';
 
 @Injectable()
 export class OrganizationService {
@@ -97,5 +101,29 @@ export class OrganizationService {
     }
 
     return data;
+  }
+
+  async pageOrganization(pageParams: PageOrganizationInput) {
+    const { pageInput, ...rest } = pageParams;
+    const total = await this.prisma.organization.count({
+      where: {
+        deletedAt: null,
+        name: pageParams.name,
+      },
+    });
+    const data = await this.prisma.organization.findMany({
+      ...pagegen(pageInput),
+      where: {
+        deletedAt: null,
+        ...rest,
+      },
+    });
+    if (!data) {
+      throw new Error('Organization not found');
+    }
+    return {
+      data,
+      total,
+    };
   }
 }

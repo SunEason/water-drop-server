@@ -4,7 +4,12 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 // import { GqlAuthGuard } from 'src/modules/common/guards/auth.guard';
 import { OrganizationService } from './organization.service';
 import { OrgImageService } from './org-image.service';
-import { MutationOrganizationInput, Organization } from 'src/graphql.schema';
+import {
+  MutationOrganizationInput,
+  Organization,
+  PageOrganization,
+  PageOrganizationInput,
+} from 'src/graphql.schema';
 // import { CurUserId } from '../common/decorators/current-user.decorator';
 
 @Resolver()
@@ -67,5 +72,23 @@ export class OrganizationResolver {
       });
     if (!data) throw new Error('Organization not found');
     return data;
+  }
+
+  @Query('pageOrganization')
+  async organizations(
+    @Args('input') input: PageOrganizationInput,
+  ): Promise<PageOrganization> {
+    const { data, total } =
+      await this.organizationService.pageOrganization(input);
+    if (!data) throw new Error('No organizations found');
+
+    return {
+      organizations: data,
+      pageInfo: {
+        total,
+        current: input.pageInput.current,
+        pageSize: input.pageInput.pageSize,
+      },
+    };
   }
 }

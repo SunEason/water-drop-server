@@ -7,6 +7,7 @@
     "Dysmsapi",
     "endregion",
     "nestjs",
-    "openapi"
+    "openapi",
+    "pagegen"
   ]
 }

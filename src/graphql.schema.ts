@@ -117,12 +117,12 @@ export class Organization {
 }
 
 export class PageOrganization {
-    organization?: Nullable<Nullable<Student>[]>;
-    pageInfo?: Nullable<PageInfo>;
+    organizations?: Nullable<Organization[]>;
+    pageInfo: PageInfo;
 }
 
 export abstract class IQuery {
-    abstract organizations(input?: Nullable<PageOrganizationInput>): Nullable<PageOrganization> | Promise<Nullable<PageOrganization>>;
+    abstract pageOrganization(input?: Nullable<PageOrganizationInput>): Nullable<PageOrganization> | Promise<Nullable<PageOrganization>>;
 
     abstract getOrganization(id: string): Nullable<Organization> | Promise<Nullable<Organization>>;
 
