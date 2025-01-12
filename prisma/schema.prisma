@@ -43,20 +43,20 @@ model Student {
 
 model Organization {
   id         String   @id @default(uuid())
+  tel String  @unique
+  name       String
   createTime DateTime @default(now())
   updateTime DateTime @updatedAt
   businessLicense String
   identityCardFrontImg String
   identityCardBackImg String
   logo      String
+  address     String
   // 以逗号分割 
   tags       String? @db.Text
   description String? @db.Text
-  name       String?
-  address     String?
   longitude    String?
   latitude   String?
-  tel String?  @unique
   deletedAt DateTime? @map("deleted_at")
   frontImages OrgImage[] @relation("frontImages")
   roomImages OrgImage[] @relation("roomImages")

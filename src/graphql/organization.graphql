@@ -17,13 +17,13 @@ type Organization {
   identityCardFrontImg: String!
   identityCardBackImg: String!
   logo:      String!
+  name:       String!
+  address:     String!
+  tel: String!
   tags:       String
   description: String
-  name:       String
-  address:     String
   longitude:    String
   latitude:   String
-  tel: String
   frontImages:[OrgImage!] 
   roomImages:[OrgImage!] 
   otherImages:[OrgImage!] 
@@ -46,12 +46,12 @@ input MutationOrganizationInput {
   identityCardFrontImg: String!
   identityCardBackImg: String!
   logo:      String!
+  tel: String!
+  address:     String!
   tags:       String
   description: String
-  address:     String
   longitude:    String
   latitude: String
-  tel: String
   frontImages:[OrgImageInput!]
   roomImages:[OrgImageInput!]
   otherImages:[OrgImageInput!]
