@@ -13,7 +13,7 @@ export class OrgImageService {
             frontOrgId: orgId,
           },
           {
-            frontOrgId: orgId,
+            otherOrgId: orgId,
           },
           {
             roomOrgId: orgId,
