@@ -79,6 +79,8 @@ export abstract class IMutation {
 
     abstract updateOrganization(id: string, input: MutationOrganizationInput): Nullable<Organization> | Promise<Nullable<Organization>>;
 
+    abstract commitOrganization(input: MutationOrganizationInput, id?: Nullable<string>): Nullable<Organization> | Promise<Nullable<Organization>>;
+
     abstract removeOrganization(id: string): Nullable<boolean> | Promise<Nullable<boolean>>;
 
     abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;

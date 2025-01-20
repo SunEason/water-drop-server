@@ -70,5 +70,6 @@ type Query {
 type Mutation {
   createOrganization(input: MutationOrganizationInput!): Organization
   updateOrganization(id: String!, input: MutationOrganizationInput!): Organization
+  commitOrganization(input: MutationOrganizationInput!, id: String): Organization
   removeOrganization(id: String!): Boolean
 }

@@ -52,6 +52,33 @@ export class OrganizationResolver {
     return data;
   }
 
+  @Mutation('commitOrganization')
+  async commitOrganization(
+    @Args('id') id: string,
+    @Args('input') input: MutationOrganizationInput,
+  ): Promise<Organization> {
+    if (id) {
+      await this.orgImageService.deleteOrgImage(id).catch((err) => {
+        throw new Error(err.message);
+      });
+      const data = await this.organizationService
+        .updateOrganization(id, input)
+        .catch((err) => {
+          throw new Error(err.message);
+        });
+      if (!data) throw new Error('Organization not updated');
+      return data;
+    } else {
+      const data = await this.organizationService
+        .createOrganization(input)
+        .catch((err) => {
+          throw new Error(err.message);
+        });
+      if (!data) throw new Error('Organization not created');
+      return data;
+    }
+  }
+
   @Mutation('removeOrganization')
   async removeOrganization(@Args('id') id: string): Promise<boolean> {
     const data = await this.organizationService
