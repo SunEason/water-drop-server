@@ -104,18 +104,24 @@ export class OrganizationService {
   }
 
   async pageOrganization(pageParams: PageOrganizationInput) {
-    const { pageInput, ...rest } = pageParams;
+    const { pageInput, name } = pageParams;
     const total = await this.prisma.organization.count({
       where: {
         deletedAt: null,
-        name: pageParams.name,
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
       },
     });
     const data = await this.prisma.organization.findMany({
       ...pagegen(pageInput),
       where: {
         deletedAt: null,
-        ...rest,
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
       },
     });
     if (!data) {
