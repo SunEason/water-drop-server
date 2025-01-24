@@ -1,0 +1,61 @@
+type Course {
+  id: String!
+  createTime: DateTime!
+  updateTime: DateTime!
+  deletedAt: DateTime
+  name: String!
+  # 适龄人群
+  group: String!
+  # 适合基础
+  baseAbility: String!
+  # 限制人数
+  limitNumber: Int!
+  # 描述
+  desc: String
+  # 预约信息
+  reserveInfo: String
+  # 退款信息
+  refundInfo: String
+  # 其他信息
+  otherInfo: String
+}
+
+input PageCourseInput {
+  name: String
+  pageInput: pageInput!
+}
+
+type PageCourse {
+  courses: [Course!]
+  pageInfo: pageInfo!
+}
+
+input MutationCourseInput {
+  name: String!
+  # 适龄人群
+  group: String!
+  # 适合基础
+  baseAbility: String!
+  # 限制人数
+  limitNumber: Int!
+  # 描述
+  desc: String
+  # 预约信息
+  reserveInfo: String
+  # 退款信息
+  refundInfo: String
+  # 其他信息
+  otherInfo: String
+}
+
+type Query {
+  pageCourse(input: PageCourseInput): PageCourse
+  getCourse(id: String!): Course
+}
+
+type Mutation {
+  createCourse(input: MutationCourseInput!): Course
+  updateCourse(id: String!, input: MutationCourseInput!): Course
+  commitCourse(input: MutationCourseInput!, id: String): Course
+  removeCourse(id: String!): Boolean
+}

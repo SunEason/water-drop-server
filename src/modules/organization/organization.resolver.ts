@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-// import { UseGuards } from '@nestjs/common';
-// import { GqlAuthGuard } from 'src/modules/common/guards/auth.guard';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'src/modules/common/guards/auth.guard';
 import { OrganizationService } from './organization.service';
 import { OrgImageService } from './org-image.service';
 import {
@@ -13,7 +13,7 @@ import {
 // import { CurUserId } from '../common/decorators/current-user.decorator';
 
 @Resolver()
-// @UseGuards(GqlAuthGuard)
+@UseGuards(GqlAuthGuard)
 export class OrganizationResolver {
   constructor(
     private readonly organizationService: OrganizationService,
@@ -21,15 +21,15 @@ export class OrganizationResolver {
   ) {}
 
   @Mutation('createOrganization')
-  async users(
+  async createOrganization(
     @Args('input') input: MutationOrganizationInput,
     // @CurUserId() userId: string,
   ): Promise<Organization> {
     // console.log(userId);
     const data = await this.organizationService
       .createOrganization(input)
-      .catch((err) => {
-        throw new Error(err.message);
+      .catch((e) => {
+        throw new Error(e.message);
       });
     if (!data) throw new Error('Organization not created');
     return data;
@@ -40,13 +40,13 @@ export class OrganizationResolver {
     @Args('id') id: string,
     @Args('input') input: MutationOrganizationInput,
   ): Promise<Organization> {
-    await this.orgImageService.deleteOrgImage(id).catch((err) => {
-      throw new Error(err.message);
+    await this.orgImageService.deleteOrgImage(id).catch((e) => {
+      throw new Error(e.message);
     });
     const data = await this.organizationService
       .updateOrganization(id, input)
-      .catch((err) => {
-        throw new Error(err.message);
+      .catch((e) => {
+        throw new Error(e.message);
       });
     if (!data) throw new Error('Organization not updated');
     return data;
@@ -58,21 +58,21 @@ export class OrganizationResolver {
     @Args('input') input: MutationOrganizationInput,
   ): Promise<Organization> {
     if (id) {
-      await this.orgImageService.deleteOrgImage(id).catch((err) => {
-        throw new Error(err.message);
+      await this.orgImageService.deleteOrgImage(id).catch((e) => {
+        throw new Error(e.message);
       });
       const data = await this.organizationService
         .updateOrganization(id, input)
-        .catch((err) => {
-          throw new Error(err.message);
+        .catch((e) => {
+          throw new Error(e.message);
         });
       if (!data) throw new Error('Organization not updated');
       return data;
     } else {
       const data = await this.organizationService
         .createOrganization(input)
-        .catch((err) => {
-          throw new Error(err.message);
+        .catch((e) => {
+          throw new Error(e.message);
         });
       if (!data) throw new Error('Organization not created');
       return data;
@@ -83,8 +83,8 @@ export class OrganizationResolver {
   async removeOrganization(@Args('id') id: string): Promise<boolean> {
     const data = await this.organizationService
       .removeOrganization(id)
-      .catch((err) => {
-        throw new Error(err.message);
+      .catch((e) => {
+        throw new Error(e.message);
       });
     if (!data) throw new Error('Organization not removed');
     return true;
@@ -94,8 +94,8 @@ export class OrganizationResolver {
   async getOrganization(@Args('id') id: string): Promise<Organization> {
     const data = await this.organizationService
       .getOrganization(id)
-      .catch((err) => {
-        throw new Error(err.message);
+      .catch((e) => {
+        throw new Error(e.message);
       });
     if (!data) throw new Error('Organization not found');
     return data;
@@ -105,8 +105,11 @@ export class OrganizationResolver {
   async organizations(
     @Args('input') input: PageOrganizationInput,
   ): Promise<PageOrganization> {
-    const { data, total } =
-      await this.organizationService.pageOrganization(input);
+    const { data, total } = await this.organizationService
+      .pageOrganization(input)
+      .catch((e) => {
+        throw new Error(e.message);
+      });
     if (!data) throw new Error('No organizations found');
 
     return {

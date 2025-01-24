@@ -75,3 +75,26 @@ model OrgImage {
   otherOrgId String?
   otherOrg Organization? @relation("otherImages",fields: [otherOrgId], references: [id])
 }
+
+model Course {
+  id         String   @id @default(uuid())
+  createTime DateTime @default(now())
+  updateTime DateTime @updatedAt
+  deletedAt DateTime? @map("deleted_at")
+  name       String
+  // 适龄人群
+  group      String
+  // 适合基础
+  baseAbility       String
+  // 限制人数
+  limitNumber Int
+  // 描述
+  desc       String?
+  // 预约信息
+  reserveInfo String?
+  // 退款信息
+  refundInfo String?
+  // 其他信息
+  otherInfo String?
+  @@index([deletedAt])
+}

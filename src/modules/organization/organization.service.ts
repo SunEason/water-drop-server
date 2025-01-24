@@ -119,13 +119,13 @@ export class OrganizationService {
       where: {
         deletedAt: null,
         name: {
-          contains: name,
+          contains: name || '',
           mode: 'insensitive',
         },
       },
     });
     if (!data) {
-      throw new Error('Organization not found');
+      return null;
     }
     return {
       data,

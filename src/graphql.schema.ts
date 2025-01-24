@@ -13,6 +13,22 @@ export class PageInput {
     pageSize: number;
 }
 
+export class PageCourseInput {
+    name?: Nullable<string>;
+    pageInput: PageInput;
+}
+
+export class MutationCourseInput {
+    name: string;
+    group: string;
+    baseAbility: string;
+    limitNumber: number;
+    desc?: Nullable<string>;
+    reserveInfo?: Nullable<string>;
+    refundInfo?: Nullable<string>;
+    otherInfo?: Nullable<string>;
+}
+
 export class PageOrganizationInput {
     name?: Nullable<string>;
     pageInput: PageInput;
@@ -75,6 +91,14 @@ export abstract class IMutation {
 
     abstract login(tel: string, code: string): Nullable<AuthLogin> | Promise<Nullable<AuthLogin>>;
 
+    abstract createCourse(input: MutationCourseInput): Nullable<Course> | Promise<Nullable<Course>>;
+
+    abstract updateCourse(id: string, input: MutationCourseInput): Nullable<Course> | Promise<Nullable<Course>>;
+
+    abstract commitCourse(input: MutationCourseInput, id?: Nullable<string>): Nullable<Course> | Promise<Nullable<Course>>;
+
+    abstract removeCourse(id: string): Nullable<boolean> | Promise<Nullable<boolean>>;
+
     abstract createOrganization(input: MutationOrganizationInput): Nullable<Organization> | Promise<Nullable<Organization>>;
 
     abstract updateOrganization(id: string, input: MutationOrganizationInput): Nullable<Organization> | Promise<Nullable<Organization>>;
@@ -90,6 +114,46 @@ export abstract class IMutation {
     abstract removeUser(id: string): Nullable<User> | Promise<Nullable<User>>;
 
     abstract updateUserInfo(id: string, input: UserUpdateInput): Nullable<User> | Promise<Nullable<User>>;
+}
+
+export class Course {
+    id: string;
+    createTime: DateTime;
+    updateTime: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    name: string;
+    group: string;
+    baseAbility: string;
+    limitNumber: number;
+    desc?: Nullable<string>;
+    reserveInfo?: Nullable<string>;
+    refundInfo?: Nullable<string>;
+    otherInfo?: Nullable<string>;
+}
+
+export class PageCourse {
+    courses?: Nullable<Course[]>;
+    pageInfo: PageInfo;
+}
+
+export abstract class IQuery {
+    abstract pageCourse(input?: Nullable<PageCourseInput>): Nullable<PageCourse> | Promise<Nullable<PageCourse>>;
+
+    abstract getCourse(id: string): Nullable<Course> | Promise<Nullable<Course>>;
+
+    abstract pageOrganization(input?: Nullable<PageOrganizationInput>): Nullable<PageOrganization> | Promise<Nullable<PageOrganization>>;
+
+    abstract getOrganization(id: string): Nullable<Organization> | Promise<Nullable<Organization>>;
+
+    abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
+
+    abstract students(input: PageStudentInput): Nullable<Students> | Promise<Nullable<Students>>;
+
+    abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
+
+    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract getUserInfo(): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class OrgImage {
@@ -121,22 +185,6 @@ export class Organization {
 export class PageOrganization {
     organizations?: Nullable<Organization[]>;
     pageInfo: PageInfo;
-}
-
-export abstract class IQuery {
-    abstract pageOrganization(input?: Nullable<PageOrganizationInput>): Nullable<PageOrganization> | Promise<Nullable<PageOrganization>>;
-
-    abstract getOrganization(id: string): Nullable<Organization> | Promise<Nullable<Organization>>;
-
-    abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
-
-    abstract students(input: PageStudentInput): Nullable<Students> | Promise<Nullable<Students>>;
-
-    abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
-
-    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract getUserInfo(): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class OSSParams {
