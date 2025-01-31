@@ -23,6 +23,7 @@ export class MutationCourseInput {
     group: string;
     baseAbility: string;
     limitNumber: number;
+    duration: number;
     desc?: Nullable<string>;
     reserveInfo?: Nullable<string>;
     refundInfo?: Nullable<string>;
@@ -125,6 +126,7 @@ export class Course {
     group: string;
     baseAbility: string;
     limitNumber: number;
+    duration: number;
     desc?: Nullable<string>;
     reserveInfo?: Nullable<string>;
     refundInfo?: Nullable<string>;

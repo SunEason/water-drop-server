@@ -88,6 +88,8 @@ model Course {
   baseAbility       String
   // 限制人数
   limitNumber Int
+  // 持续时长
+  duration    Int
   // 描述
   desc       String?
   // 预约信息
