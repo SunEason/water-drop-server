@@ -3,12 +3,8 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/modules/common/guards/auth.guard';
 import { CourseService } from './course.service';
-import {
-  Course,
-  MutationCourseInput,
-  PageCourse,
-  PageCourseInput,
-} from 'src/graphql.schema';
+import { Course, PageCourse, PageCourseInput } from 'src/graphql.schema';
+import { IMutationCourseInput } from './types/input';
 
 @Resolver()
 @UseGuards(GqlAuthGuard)
@@ -45,7 +41,7 @@ export class CourseResolver {
 
   @Mutation('createCourse')
   async createCourse(
-    @Args('input') input: MutationCourseInput,
+    @Args('input') input: IMutationCourseInput,
   ): Promise<Course> {
     const data = await this.courseService.createCourse(input).catch((e) => {
       throw new Error(e.message);
@@ -57,7 +53,7 @@ export class CourseResolver {
   @Mutation('updateCourse')
   async updateCourse(
     @Args('id') id: string,
-    @Args('input') input: MutationCourseInput,
+    @Args('input') input: IMutationCourseInput,
   ): Promise<Course> {
     const data = await this.courseService.updateCourse(id, input).catch((e) => {
       throw new Error(e.message);
@@ -68,7 +64,7 @@ export class CourseResolver {
 
   @Mutation('commitCourse')
   async commitCourse(
-    @Args('input') input: MutationCourseInput,
+    @Args('input') input: IMutationCourseInput,
     @Args('id') id: string,
   ): Promise<Course> {
     if (id) {
