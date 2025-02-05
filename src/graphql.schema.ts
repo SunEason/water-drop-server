@@ -29,9 +29,9 @@ export class PageCourseInput {
 }
 
 export class OrderTimeInput {
-    key?: Nullable<number>;
-    startTime?: Nullable<string>;
-    endTime?: Nullable<string>;
+    key: number;
+    startTime: string;
+    endTime: string;
 }
 
 export class ReducibleTimeInput {
@@ -142,9 +142,9 @@ export abstract class IMutation {
 }
 
 export class OrderTime {
-    key?: Nullable<number>;
-    startTime?: Nullable<string>;
-    endTime?: Nullable<string>;
+    key: number;
+    startTime: string;
+    endTime: string;
 }
 
 export class ReducibleTime {

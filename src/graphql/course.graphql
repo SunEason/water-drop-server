@@ -1,8 +1,8 @@
 ### type ###
 type OrderTime {
-  key: Int
-  startTime: String
-  endTime: String
+  key: Int!
+  startTime: String!
+  endTime: String!
 }
 # 可预约时间
 type ReducibleTime {
@@ -46,9 +46,9 @@ input PageCourseInput {
   pageInput: pageInput!
 }
 input OrderTimeInput {
-  key: Int
-  startTime: String
-  endTime: String
+  key: Int!
+  startTime: String!
+  endTime: String!
 }
 # 可预约时间
 input ReducibleTimeInput {

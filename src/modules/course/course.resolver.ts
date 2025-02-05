@@ -8,6 +8,7 @@ import {
   PageCourse,
   PageCourseInput,
   ReducibleTime,
+  ReducibleTimeInput,
 } from 'src/graphql.schema';
 import { IMutationCourseInput } from './types/input';
 
@@ -103,18 +104,18 @@ export class CourseResolver {
       throw new Error(e.message);
     });
     if (!data) throw new Error('Course not found');
-    return data.reducibleTime || [];
+    return data.reducibleTime;
   }
 
   @Mutation('setOrderTime')
   async setOrderTime(
     @Args('id') id: string,
-    @Args('input') input: ReducibleTime[],
+    @Args('input') input: ReducibleTimeInput[] | undefined | null,
   ): Promise<ReducibleTime[]> {
     const data = await this.courseService.setOrderTime(id, input).catch((e) => {
       throw new Error(e.message);
     });
     if (!data) throw new Error('OrderTime not updated');
-    return data || [];
+    return data;
   }
 }
