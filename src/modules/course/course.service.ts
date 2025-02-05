@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { MutationCourseInput, PageCourseInput } from 'src/graphql.schema';
+import {
+  Course,
+  MutationCourseInput,
+  PageCourseInput,
+} from 'src/graphql.schema';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import pagegen from 'src/utils/pagegen';
 
@@ -8,20 +12,24 @@ export class CourseService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createCourse(input: MutationCourseInput) {
-    const data = await this.prisma.course.create({
-      data: input,
-    });
+    const data = (await this.prisma.course.create({
+      data: input as {
+        reducibleTime?: object;
+      } & MutationCourseInput,
+    })) as unknown as Course;
     if (!data) return null;
     return data;
   }
 
   async updateCourse(id: string, input: MutationCourseInput) {
-    const data = await this.prisma.course.update({
+    const data = (await this.prisma.course.update({
       where: {
         id,
       },
-      data: input,
-    });
+      data: input as {
+        reducibleTime?: object;
+      } & MutationCourseInput,
+    })) as unknown as Course;
     if (!data) return null;
     return data;
   }
@@ -43,12 +51,12 @@ export class CourseService {
   }
 
   async getCourse(id: string) {
-    const data = await this.prisma.course.findUnique({
+    const data = (await this.prisma.course.findUnique({
       where: {
         id: id,
         deletedAt: null,
       },
-    });
+    })) as unknown as Course;
 
     if (!data) {
       return null;
@@ -68,7 +76,7 @@ export class CourseService {
         },
       },
     });
-    const data = await this.prisma.course.findMany({
+    const data = (await this.prisma.course.findMany({
       ...pagegen(pageInput),
       where: {
         deletedAt: null,
@@ -77,7 +85,7 @@ export class CourseService {
           mode: 'insensitive',
         },
       },
-    });
+    })) as unknown as Course[];
     if (!data) {
       throw new Error('Organization not found');
     }

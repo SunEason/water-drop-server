@@ -1,3 +1,14 @@
+### type ###
+type OrderTime {
+  key: Int
+  startTime: String
+  endTime: String
+}
+# 可预约时间
+type ReducibleTime {
+  week: Weekday!
+  orderTime: [OrderTime!]!
+}
 type Course {
   id: String!
   createTime: DateTime!
@@ -20,18 +31,30 @@ type Course {
   refundInfo: String
   # 其他信息
   otherInfo: String
+  # 可预约时间
+  reducibleTime: [ReducibleTime!]
 }
-
-input PageCourseInput {
-  name: String
-  pageInput: pageInput!
-}
-
 type PageCourse {
   courses: [Course!]
   pageInfo: pageInfo!
 }
 
+
+### input ###
+input PageCourseInput {
+  name: String
+  pageInput: pageInput!
+}
+input OrderTimeInput {
+  key: Int
+  startTime: String
+  endTime: String
+}
+# 可预约时间
+input ReducibleTimeInput {
+  week: Weekday!
+  orderTime: [OrderTimeInput!]!
+}
 input MutationCourseInput {
   name: String!
   # 适龄人群
@@ -50,8 +73,10 @@ input MutationCourseInput {
   refundInfo: String
   # 其他信息
   otherInfo: String
+  reducibleTime: [ReducibleTimeInput!]
 }
 
+### interface ### 
 type Query {
   pageCourse(input: PageCourseInput): PageCourse
   getCourse(id: String!): Course

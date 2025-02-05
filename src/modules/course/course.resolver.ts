@@ -11,7 +11,6 @@ import { IMutationCourseInput } from './types/input';
 export class CourseResolver {
   constructor(private readonly courseService: CourseService) {}
 
-  //getCourse(id: String!): Course
   @Query('getCourse')
   async getCourse(@Args('id') id: string): Promise<Course> {
     const data = await this.courseService.getCourse(id).catch((e) => {

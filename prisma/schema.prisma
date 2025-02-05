@@ -98,5 +98,7 @@ model Course {
   refundInfo String?
   // 其他信息
   otherInfo String?
+  // 可约时间
+  reducibleTime Json?
   @@index([deletedAt])
 }

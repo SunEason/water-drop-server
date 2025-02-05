@@ -8,6 +8,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum Weekday {
+    monday = "monday",
+    tuesday = "tuesday",
+    wednesday = "wednesday",
+    thursday = "thursday",
+    friday = "friday",
+    saturday = "saturday",
+    sunday = "sunday"
+}
+
 export class PageInput {
     current: number;
     pageSize: number;
@@ -16,6 +26,17 @@ export class PageInput {
 export class PageCourseInput {
     name?: Nullable<string>;
     pageInput: PageInput;
+}
+
+export class OrderTimeInput {
+    key?: Nullable<number>;
+    startTime?: Nullable<string>;
+    endTime?: Nullable<string>;
+}
+
+export class ReducibleTimeInput {
+    week: Weekday;
+    orderTime: OrderTimeInput[];
 }
 
 export class MutationCourseInput {
@@ -28,6 +49,7 @@ export class MutationCourseInput {
     reserveInfo?: Nullable<string>;
     refundInfo?: Nullable<string>;
     otherInfo?: Nullable<string>;
+    reducibleTime?: Nullable<ReducibleTimeInput[]>;
 }
 
 export class PageOrganizationInput {
@@ -117,6 +139,17 @@ export abstract class IMutation {
     abstract updateUserInfo(id: string, input: UserUpdateInput): Nullable<User> | Promise<Nullable<User>>;
 }
 
+export class OrderTime {
+    key?: Nullable<number>;
+    startTime?: Nullable<string>;
+    endTime?: Nullable<string>;
+}
+
+export class ReducibleTime {
+    week: Weekday;
+    orderTime: OrderTime[];
+}
+
 export class Course {
     id: string;
     createTime: DateTime;
@@ -131,6 +164,7 @@ export class Course {
     reserveInfo?: Nullable<string>;
     refundInfo?: Nullable<string>;
     otherInfo?: Nullable<string>;
+    reducibleTime?: Nullable<ReducibleTime[]>;
 }
 
 export class PageCourse {
