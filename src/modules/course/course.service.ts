@@ -3,6 +3,7 @@ import {
   Course,
   MutationCourseInput,
   PageCourseInput,
+  ReducibleTime,
 } from 'src/graphql.schema';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import pagegen from 'src/utils/pagegen';
@@ -93,5 +94,18 @@ export class CourseService {
       data,
       total,
     };
+  }
+
+  async setOrderTime(id: string, orderTime: ReducibleTime[]) {
+    const data = (await this.prisma.course.update({
+      where: {
+        id,
+      },
+      data: {
+        reducibleTime: orderTime as object,
+      },
+    })) as unknown as Course;
+    if (!data) return null;
+    return data.reducibleTime;
   }
 }

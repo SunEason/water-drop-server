@@ -80,11 +80,12 @@ input MutationCourseInput {
 type Query {
   pageCourse(input: PageCourseInput): PageCourse
   getCourse(id: String!): Course
+  getOrderTime(id: String!): [ReducibleTime!]
 }
-
 type Mutation {
   createCourse(input: MutationCourseInput!): Course
   updateCourse(id: String!, input: MutationCourseInput!): Course
   commitCourse(input: MutationCourseInput!, id: String): Course
   removeCourse(id: String!): Boolean
+  setOrderTime(id: String!, input: [ReducibleTimeInput!]): [ReducibleTime!]
 }

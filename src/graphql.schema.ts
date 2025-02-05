@@ -122,6 +122,8 @@ export abstract class IMutation {
 
     abstract removeCourse(id: string): Nullable<boolean> | Promise<Nullable<boolean>>;
 
+    abstract setOrderTime(id: string, input?: Nullable<ReducibleTimeInput[]>): Nullable<ReducibleTime[]> | Promise<Nullable<ReducibleTime[]>>;
+
     abstract createOrganization(input: MutationOrganizationInput): Nullable<Organization> | Promise<Nullable<Organization>>;
 
     abstract updateOrganization(id: string, input: MutationOrganizationInput): Nullable<Organization> | Promise<Nullable<Organization>>;
@@ -176,6 +178,8 @@ export abstract class IQuery {
     abstract pageCourse(input?: Nullable<PageCourseInput>): Nullable<PageCourse> | Promise<Nullable<PageCourse>>;
 
     abstract getCourse(id: string): Nullable<Course> | Promise<Nullable<Course>>;
+
+    abstract getOrderTime(id: string): Nullable<ReducibleTime[]> | Promise<Nullable<ReducibleTime[]>>;
 
     abstract pageOrganization(input?: Nullable<PageOrganizationInput>): Nullable<PageOrganization> | Promise<Nullable<PageOrganization>>;
 

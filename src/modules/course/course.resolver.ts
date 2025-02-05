@@ -3,7 +3,12 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/modules/common/guards/auth.guard';
 import { CourseService } from './course.service';
-import { Course, PageCourse, PageCourseInput } from 'src/graphql.schema';
+import {
+  Course,
+  PageCourse,
+  PageCourseInput,
+  ReducibleTime,
+} from 'src/graphql.schema';
 import { IMutationCourseInput } from './types/input';
 
 @Resolver()
@@ -90,5 +95,26 @@ export class CourseResolver {
     });
     if (!data) throw new Error('Course not removed');
     return true;
+  }
+
+  @Query('getOrderTime')
+  async getOrderTime(@Args('id') id: string): Promise<ReducibleTime[]> {
+    const data = await this.courseService.getCourse(id).catch((e) => {
+      throw new Error(e.message);
+    });
+    if (!data) throw new Error('Course not found');
+    return data.reducibleTime || [];
+  }
+
+  @Mutation('setOrderTime')
+  async setOrderTime(
+    @Args('id') id: string,
+    @Args('input') input: ReducibleTime[],
+  ): Promise<ReducibleTime[]> {
+    const data = await this.courseService.setOrderTime(id, input).catch((e) => {
+      throw new Error(e.message);
+    });
+    if (!data) throw new Error('OrderTime not updated');
+    return data || [];
   }
 }
