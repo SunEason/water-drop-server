@@ -11,6 +11,8 @@ import {
   ReducibleTimeInput,
 } from 'src/graphql.schema';
 import { IMutationCourseInput } from './types/input';
+import { CurOrgId } from '../common/decorators/current-org.decorator';
+import { CurUserId } from '../common/decorators/current-user.decorator';
 
 @Resolver()
 @UseGuards(GqlAuthGuard)
@@ -18,18 +20,28 @@ export class CourseResolver {
   constructor(private readonly courseService: CourseService) {}
 
   @Query('getCourse')
-  async getCourse(@Args('id') id: string): Promise<Course> {
-    const data = await this.courseService.getCourse(id).catch((e) => {
-      throw new Error(e.message);
-    });
+  async getCourse(
+    @Args('id') id: string,
+    @CurUserId() curUserId: string,
+    @CurOrgId() curOrgId: string,
+  ): Promise<Course> {
+    const data = await this.courseService
+      .getCourse(id, curUserId, curOrgId)
+      .catch((e) => {
+        throw new Error(e.message);
+      });
     if (!data) throw new Error('Course not found');
     return data;
   }
 
   @Query('pageCourse')
-  async pageCourse(@Args('input') input: PageCourseInput): Promise<PageCourse> {
+  async pageCourse(
+    @Args('input') input: PageCourseInput,
+    @CurUserId() curUserId: string,
+    @CurOrgId() curOrgId: string,
+  ): Promise<PageCourse> {
     const { data, total } = await this.courseService
-      .pageCourse(input)
+      .pageCourse(input, curUserId, curOrgId)
       .catch((e) => {
         throw new Error(e.message);
       });
@@ -47,10 +59,14 @@ export class CourseResolver {
   @Mutation('createCourse')
   async createCourse(
     @Args('input') input: IMutationCourseInput,
+    @CurUserId() curUserId: string,
+    @CurOrgId() curOrgId: string,
   ): Promise<Course> {
-    const data = await this.courseService.createCourse(input).catch((e) => {
-      throw new Error(e.message);
-    });
+    const data = await this.courseService
+      .createCourse(input, curUserId, curOrgId)
+      .catch((e) => {
+        throw new Error(e.message);
+      });
     if (!data) throw new Error('Course not created');
     return data;
   }
@@ -59,10 +75,13 @@ export class CourseResolver {
   async updateCourse(
     @Args('id') id: string,
     @Args('input') input: IMutationCourseInput,
+    @CurUserId() curUserId: string,
   ): Promise<Course> {
-    const data = await this.courseService.updateCourse(id, input).catch((e) => {
-      throw new Error(e.message);
-    });
+    const data = await this.courseService
+      .updateCourse(id, input, curUserId)
+      .catch((e) => {
+        throw new Error(e.message);
+      });
     if (!data) throw new Error('Course not updated');
     return data;
   }
@@ -71,19 +90,23 @@ export class CourseResolver {
   async commitCourse(
     @Args('input') input: IMutationCourseInput,
     @Args('id') id: string,
+    @CurUserId() curUserId: string,
+    @CurOrgId() curOrgId: string,
   ): Promise<Course> {
     if (id) {
       const data = await this.courseService
-        .updateCourse(id, input)
+        .updateCourse(id, input, curUserId)
         .catch((e) => {
           throw new Error(e.message);
         });
       if (!data) throw new Error('Course not updated');
       return data;
     } else {
-      const data = await this.courseService.createCourse(input).catch((e) => {
-        throw new Error(e.message);
-      });
+      const data = await this.courseService
+        .createCourse(input, curUserId, curOrgId)
+        .catch((e) => {
+          throw new Error(e.message);
+        });
       if (!data) throw new Error('Course not created');
       return data;
     }
@@ -99,10 +122,16 @@ export class CourseResolver {
   }
 
   @Query('getOrderTime')
-  async getOrderTime(@Args('id') id: string): Promise<ReducibleTime[]> {
-    const data = await this.courseService.getCourse(id).catch((e) => {
-      throw new Error(e.message);
-    });
+  async getOrderTime(
+    @Args('id') id: string,
+    @CurUserId() curUserId: string,
+    @CurOrgId() curOrgId: string,
+  ): Promise<ReducibleTime[]> {
+    const data = await this.courseService
+      .getCourse(id, curUserId, curOrgId)
+      .catch((e) => {
+        throw new Error(e.message);
+      });
     if (!data) throw new Error('Course not found');
     return data.reducibleTime;
   }

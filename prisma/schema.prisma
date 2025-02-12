@@ -61,6 +61,7 @@ model Organization {
   frontImages OrgImage[] @relation("frontImages")
   roomImages OrgImage[] @relation("roomImages")
   otherImages OrgImage[] @relation("otherImages")
+  courses Course[]
   @@index([deletedAt])
 }
 
@@ -80,6 +81,8 @@ model Course {
   id         String   @id @default(uuid())
   createTime DateTime @default(now())
   updateTime DateTime @updatedAt
+  createdBy  String
+  updatedBy  String?
   deletedAt DateTime? @map("deleted_at")
   name       String
   // 适龄人群
@@ -100,5 +103,8 @@ model Course {
   otherInfo String?
   // 可约时间
   reducibleTime Json?
+  // 组织id
+  orgId String 
+  org Organization? @relation(fields: [orgId], references: [id])
   @@index([deletedAt])
 }

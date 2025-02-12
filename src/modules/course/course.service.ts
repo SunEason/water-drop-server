@@ -12,23 +12,44 @@ import pagegen from 'src/utils/pagegen';
 export class CourseService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createCourse(input: MutationCourseInput) {
+  async createCourse(
+    input: MutationCourseInput,
+    createdBy: string,
+    orgId: string,
+  ) {
     const data = (await this.prisma.course.create({
-      data: input as {
+      data: {
+        ...input,
+        createdBy,
+        org: {
+          connect: {
+            id: orgId,
+          },
+        },
+      } as {
         reducibleTime?: object;
+        createdBy: string;
       } & MutationCourseInput,
     })) as unknown as Course;
     if (!data) return null;
     return data;
   }
 
-  async updateCourse(id: string, input: MutationCourseInput) {
+  async updateCourse(
+    id: string,
+    input: MutationCourseInput,
+    updatedBy: string,
+  ) {
     const data = (await this.prisma.course.update({
       where: {
         id,
       },
-      data: input as {
+      data: {
+        ...input,
+        updatedBy: updatedBy,
+      } as {
         reducibleTime?: object;
+        updatedBy: string;
       } & MutationCourseInput,
     })) as unknown as Course;
     if (!data) return null;
@@ -51,11 +72,15 @@ export class CourseService {
     return true;
   }
 
-  async getCourse(id: string) {
+  async getCourse(id: string, createdBy: string, orgId: string) {
     const data = (await this.prisma.course.findUnique({
       where: {
         id: id,
         deletedAt: null,
+        createdBy: createdBy,
+        org: {
+          id: orgId,
+        },
       },
     })) as unknown as Course;
 
@@ -66,7 +91,11 @@ export class CourseService {
     return data;
   }
 
-  async pageCourse(pageParams: PageCourseInput) {
+  async pageCourse(
+    pageParams: PageCourseInput,
+    createdBy: string,
+    orgId: string,
+  ) {
     const { pageInput, name } = pageParams;
     const total = await this.prisma.course.count({
       where: {
@@ -74,6 +103,10 @@ export class CourseService {
         name: {
           contains: name || '',
           mode: 'insensitive',
+        },
+        createdBy: createdBy,
+        org: {
+          id: orgId,
         },
       },
     });
@@ -84,6 +117,10 @@ export class CourseService {
         name: {
           contains: name,
           mode: 'insensitive',
+        },
+        createdBy: createdBy,
+        org: {
+          id: orgId,
         },
       },
     })) as unknown as Course[];
