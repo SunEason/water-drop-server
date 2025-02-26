@@ -20,3 +20,8 @@ enum Weekday {
   saturday
   sunday
 }
+
+enum CardType {
+  TIME
+  DURATION
+}

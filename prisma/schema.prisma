@@ -62,6 +62,9 @@ model Organization {
   roomImages OrgImage[] @relation("roomImages")
   otherImages OrgImage[] @relation("otherImages")
   courses Course[]
+  cards Card[]
+
+  //索引
   @@index([deletedAt])
 }
 
@@ -106,5 +109,42 @@ model Course {
   // 组织id
   orgId String 
   org Organization? @relation(fields: [orgId], references: [id])
+  // 卡id
+  cards Card[]
+
+  //索引
+  @@index([deletedAt])
+}
+
+enum CardType {
+  // 次卡
+  TIME
+  // 时长卡
+  DURATION
+}
+
+model Card {
+  id         String   @id @default(uuid())
+  createTime DateTime @default(now())
+  updateTime DateTime @updatedAt
+  createdBy  String
+  updatedBy  String?
+  deletedAt DateTime? @map("deleted_at")
+  // 名称
+  name       String
+  // 卡类型
+  type       CardType @default(TIME)
+  // 上课次数
+  times      Int? @default(0)
+  // 卡时长
+  duration   Int? @default(0)
+  // 课程id
+  courseId String
+  course Course? @relation(fields: [courseId], references: [id])
+  // 组织id
+  orgId String
+  org Organization? @relation(fields: [orgId], references: [id])
+
+  //索引
   @@index([deletedAt])
 }

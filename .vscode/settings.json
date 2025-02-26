@@ -9,5 +9,6 @@
     "nestjs",
     "openapi",
     "pagegen"
-  ]
+  ],
+  "marscode.chatLanguage": "cn"
 }

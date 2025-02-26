@@ -18,9 +18,26 @@ export enum Weekday {
     sunday = "sunday"
 }
 
+export enum CardType {
+    TIME = "TIME",
+    DURATION = "DURATION"
+}
+
+export enum Method {
+    update = "update",
+    create = "create"
+}
+
 export class PageInput {
     current: number;
     pageSize: number;
+}
+
+export class CardInput {
+    name: string;
+    type: CardType;
+    times?: Nullable<number>;
+    duration?: Nullable<number>;
 }
 
 export class PageCourseInput {
@@ -114,6 +131,14 @@ export abstract class IMutation {
 
     abstract login(tel: string, code: string): Nullable<AuthLogin> | Promise<Nullable<AuthLogin>>;
 
+    abstract createCard(input: CardInput, courseId: string): Card | Promise<Card>;
+
+    abstract updateCard(id: string, input: CardInput): Card | Promise<Card>;
+
+    abstract commitCard(input: CardInput, id: string, method: Method): Card | Promise<Card>;
+
+    abstract removeCard(id: string): boolean | Promise<boolean>;
+
     abstract createCourse(input: MutationCourseInput): Nullable<Course> | Promise<Nullable<Course>>;
 
     abstract updateCourse(id: string, input: MutationCourseInput): Nullable<Course> | Promise<Nullable<Course>>;
@@ -139,6 +164,42 @@ export abstract class IMutation {
     abstract removeUser(id: string): Nullable<User> | Promise<Nullable<User>>;
 
     abstract updateUserInfo(id: string, input: UserUpdateInput): Nullable<User> | Promise<Nullable<User>>;
+}
+
+export class Card {
+    id: string;
+    createTime: DateTime;
+    updateTime: DateTime;
+    name: string;
+    type: CardType;
+    times?: Nullable<number>;
+    duration?: Nullable<number>;
+}
+
+export abstract class IQuery {
+    abstract cards(courseId: string): Nullable<Card[]> | Promise<Nullable<Card[]>>;
+
+    abstract card(id: string): Nullable<Card> | Promise<Nullable<Card>>;
+
+    abstract pageCourse(input?: Nullable<PageCourseInput>): Nullable<PageCourse> | Promise<Nullable<PageCourse>>;
+
+    abstract getCourse(id: string): Nullable<Course> | Promise<Nullable<Course>>;
+
+    abstract getOrderTime(id: string): Nullable<ReducibleTime[]> | Promise<Nullable<ReducibleTime[]>>;
+
+    abstract pageOrganization(input?: Nullable<PageOrganizationInput>): Nullable<PageOrganization> | Promise<Nullable<PageOrganization>>;
+
+    abstract getOrganization(id: string): Nullable<Organization> | Promise<Nullable<Organization>>;
+
+    abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
+
+    abstract students(input: PageStudentInput): Nullable<Students> | Promise<Nullable<Students>>;
+
+    abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
+
+    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract getUserInfo(): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class OrderTime {
@@ -172,28 +233,6 @@ export class Course {
 export class PageCourse {
     courses?: Nullable<Course[]>;
     pageInfo: PageInfo;
-}
-
-export abstract class IQuery {
-    abstract pageCourse(input?: Nullable<PageCourseInput>): Nullable<PageCourse> | Promise<Nullable<PageCourse>>;
-
-    abstract getCourse(id: string): Nullable<Course> | Promise<Nullable<Course>>;
-
-    abstract getOrderTime(id: string): Nullable<ReducibleTime[]> | Promise<Nullable<ReducibleTime[]>>;
-
-    abstract pageOrganization(input?: Nullable<PageOrganizationInput>): Nullable<PageOrganization> | Promise<Nullable<PageOrganization>>;
-
-    abstract getOrganization(id: string): Nullable<Organization> | Promise<Nullable<Organization>>;
-
-    abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
-
-    abstract students(input: PageStudentInput): Nullable<Students> | Promise<Nullable<Students>>;
-
-    abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
-
-    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract getUserInfo(): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class OrgImage {

@@ -1,0 +1,37 @@
+type Card {
+  id: String!
+  createTime: DateTime!
+  updateTime: DateTime!
+  # 名称
+  name: String!
+  # 卡类型
+  type: CardType!
+  # 上课次数
+  times: Int
+  # 卡时长
+  duration: Int
+}
+
+input CardInput {
+  name: String!
+  type: CardType!
+  times: Int
+  duration: Int
+}
+
+type Query {
+  cards(courseId: String!): [Card!]
+  card(id: String!): Card
+}
+
+
+enum Method {
+  update
+  create
+}
+type Mutation {
+  createCard(input: CardInput!, courseId: String!): Card!
+  updateCard(id: String!, input: CardInput!): Card!
+  commitCard(input: CardInput!, id: String!, method: Method!): Card!
+  removeCard(id: String!): Boolean!
+}
