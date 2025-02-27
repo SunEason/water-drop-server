@@ -19,7 +19,7 @@ export class StudentService {
       },
     });
     if (!data) {
-      throw new Error('No students found');
+      return null;
     }
     const total = await this.prisma.student.count({
       where: {

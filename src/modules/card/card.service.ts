@@ -7,12 +7,12 @@ export class CardService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getCard(id: string) {
-    const data = (await this.prisma.card.findUnique({
+    const data = <Card>await this.prisma.card.findUnique({
       where: {
         id,
         deletedAt: null,
       },
-    })) as unknown as Card;
+    });
     console.log(data);
     if (!data) {
       return null;
@@ -45,7 +45,7 @@ export class CardService {
     courseId: string;
     orgId: string;
   }) {
-    const data = (await this.prisma.card.create({
+    const data = <Card>await this.prisma.card.create({
       data: {
         ...input,
         createdBy,
@@ -60,7 +60,7 @@ export class CardService {
           },
         },
       },
-    })) as unknown as Card;
+    });
     if (!data) return null;
     return data;
   }
@@ -74,7 +74,7 @@ export class CardService {
     input: CardInput;
     updatedBy: string;
   }) {
-    const data = (await this.prisma.card.update({
+    const data = <Card>await this.prisma.card.update({
       where: {
         id,
       },
@@ -82,7 +82,7 @@ export class CardService {
         ...input,
         updatedBy: updatedBy,
       },
-    })) as unknown as Card;
+    });
     if (!data) return null;
     return data;
   }

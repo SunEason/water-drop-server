@@ -8,6 +8,12 @@ import {
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import pagegen from 'src/utils/pagegen';
 
+type CourseInput = {
+  reducibleTime?: object;
+  createdBy: string;
+  updatedBy?: string;
+} & MutationCourseInput;
+
 @Injectable()
 export class CourseService {
   constructor(private readonly prisma: PrismaService) {}
@@ -17,8 +23,8 @@ export class CourseService {
     createdBy: string,
     orgId: string,
   ) {
-    const data = (await this.prisma.course.create({
-      data: {
+    const data = await this.prisma.course.create({
+      data: <CourseInput>{
         ...input,
         createdBy,
         org: {
@@ -26,13 +32,10 @@ export class CourseService {
             id: orgId,
           },
         },
-      } as {
-        reducibleTime?: object;
-        createdBy: string;
-      } & MutationCourseInput,
-    })) as unknown as Course;
+      },
+    });
     if (!data) return null;
-    return data;
+    return data as unknown as Course;
   }
 
   async updateCourse(
@@ -40,20 +43,17 @@ export class CourseService {
     input: MutationCourseInput,
     updatedBy: string,
   ) {
-    const data = (await this.prisma.course.update({
+    const data = await this.prisma.course.update({
       where: {
         id,
       },
-      data: {
+      data: <CourseInput>{
         ...input,
         updatedBy: updatedBy,
-      } as {
-        reducibleTime?: object;
-        updatedBy: string;
-      } & MutationCourseInput,
-    })) as unknown as Course;
+      },
+    });
     if (!data) return null;
-    return data;
+    return data as unknown as Course;
   }
 
   async removeCourse(id: string) {
@@ -73,7 +73,7 @@ export class CourseService {
   }
 
   async getCourse(id: string, createdBy: string, orgId: string) {
-    const data = (await this.prisma.course.findUnique({
+    const data = await this.prisma.course.findUnique({
       where: {
         id: id,
         deletedAt: null,
@@ -82,13 +82,13 @@ export class CourseService {
           id: orgId,
         },
       },
-    })) as unknown as Course;
+    });
 
     if (!data) {
       return null;
     }
 
-    return data;
+    return data as unknown as Course;
   }
 
   async pageCourse(
@@ -125,7 +125,7 @@ export class CourseService {
       },
     })) as unknown as Course[];
     if (!data) {
-      throw new Error('Organization not found');
+      return null;
     }
     return {
       data,

@@ -25,11 +25,7 @@ export class CourseResolver {
     @CurUserId() curUserId: string,
     @CurOrgId() curOrgId: string,
   ): Promise<Course> {
-    const data = await this.courseService
-      .getCourse(id, curUserId, curOrgId)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    const data = await this.courseService.getCourse(id, curUserId, curOrgId);
     if (!data) throw new Error('Course not found');
     return data;
   }
@@ -40,11 +36,11 @@ export class CourseResolver {
     @CurUserId() curUserId: string,
     @CurOrgId() curOrgId: string,
   ): Promise<PageCourse> {
-    const { data, total } = await this.courseService
-      .pageCourse(input, curUserId, curOrgId)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    const { data, total } = await this.courseService.pageCourse(
+      input,
+      curUserId,
+      curOrgId,
+    );
     if (!data) throw new Error('No courses found');
     return {
       courses: data,
@@ -62,11 +58,11 @@ export class CourseResolver {
     @CurUserId() curUserId: string,
     @CurOrgId() curOrgId: string,
   ): Promise<Course> {
-    const data = await this.courseService
-      .createCourse(input, curUserId, curOrgId)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    const data = await this.courseService.createCourse(
+      input,
+      curUserId,
+      curOrgId,
+    );
     if (!data) throw new Error('Course not created');
     return data;
   }
@@ -77,11 +73,7 @@ export class CourseResolver {
     @Args('input') input: IMutationCourseInput,
     @CurUserId() curUserId: string,
   ): Promise<Course> {
-    const data = await this.courseService
-      .updateCourse(id, input, curUserId)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    const data = await this.courseService.updateCourse(id, input, curUserId);
     if (!data) throw new Error('Course not updated');
     return data;
   }
@@ -94,19 +86,15 @@ export class CourseResolver {
     @CurOrgId() curOrgId: string,
   ): Promise<Course> {
     if (id) {
-      const data = await this.courseService
-        .updateCourse(id, input, curUserId)
-        .catch((e) => {
-          throw new Error(e.message);
-        });
+      const data = await this.courseService.updateCourse(id, input, curUserId);
       if (!data) throw new Error('Course not updated');
       return data;
     } else {
-      const data = await this.courseService
-        .createCourse(input, curUserId, curOrgId)
-        .catch((e) => {
-          throw new Error(e.message);
-        });
+      const data = await this.courseService.createCourse(
+        input,
+        curUserId,
+        curOrgId,
+      );
       if (!data) throw new Error('Course not created');
       return data;
     }
@@ -114,9 +102,7 @@ export class CourseResolver {
 
   @Mutation('removeCourse')
   async removeCourse(@Args('id') id: string): Promise<boolean> {
-    const data = await this.courseService.removeCourse(id).catch((e) => {
-      throw new Error(e.message);
-    });
+    const data = await this.courseService.removeCourse(id);
     if (!data) throw new Error('Course not removed');
     return true;
   }
@@ -127,11 +113,7 @@ export class CourseResolver {
     @CurUserId() curUserId: string,
     @CurOrgId() curOrgId: string,
   ): Promise<ReducibleTime[]> {
-    const data = await this.courseService
-      .getCourse(id, curUserId, curOrgId)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    const data = await this.courseService.getCourse(id, curUserId, curOrgId);
     if (!data) throw new Error('Course not found');
     return data.reducibleTime;
   }
@@ -141,9 +123,7 @@ export class CourseResolver {
     @Args('id') id: string,
     @Args('input') input: ReducibleTimeInput[] | undefined | null,
   ): Promise<ReducibleTime[]> {
-    const data = await this.courseService.setOrderTime(id, input).catch((e) => {
-      throw new Error(e.message);
-    });
+    const data = await this.courseService.setOrderTime(id, input);
     if (!data) throw new Error('OrderTime not updated');
     return data;
   }

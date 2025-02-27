@@ -26,11 +26,7 @@ export class OrganizationResolver {
     // @CurUserId() userId: string,
   ): Promise<Organization> {
     // console.log(userId);
-    const data = await this.organizationService
-      .createOrganization(input)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    const data = await this.organizationService.createOrganization(input);
     if (!data) throw new Error('Organization not created');
     return data;
   }
@@ -40,14 +36,8 @@ export class OrganizationResolver {
     @Args('id') id: string,
     @Args('input') input: MutationOrganizationInput,
   ): Promise<Organization> {
-    await this.orgImageService.deleteOrgImage(id).catch((e) => {
-      throw new Error(e.message);
-    });
-    const data = await this.organizationService
-      .updateOrganization(id, input)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    await this.orgImageService.deleteOrgImage(id);
+    const data = await this.organizationService.updateOrganization(id, input);
     if (!data) throw new Error('Organization not updated');
     return data;
   }
@@ -58,22 +48,12 @@ export class OrganizationResolver {
     @Args('input') input: MutationOrganizationInput,
   ): Promise<Organization> {
     if (id) {
-      await this.orgImageService.deleteOrgImage(id).catch((e) => {
-        throw new Error(e.message);
-      });
-      const data = await this.organizationService
-        .updateOrganization(id, input)
-        .catch((e) => {
-          throw new Error(e.message);
-        });
+      await this.orgImageService.deleteOrgImage(id);
+      const data = await this.organizationService.updateOrganization(id, input);
       if (!data) throw new Error('Organization not updated');
       return data;
     } else {
-      const data = await this.organizationService
-        .createOrganization(input)
-        .catch((e) => {
-          throw new Error(e.message);
-        });
+      const data = await this.organizationService.createOrganization(input);
       if (!data) throw new Error('Organization not created');
       return data;
     }
@@ -81,22 +61,14 @@ export class OrganizationResolver {
 
   @Mutation('removeOrganization')
   async removeOrganization(@Args('id') id: string): Promise<boolean> {
-    const data = await this.organizationService
-      .removeOrganization(id)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    const data = await this.organizationService.removeOrganization(id);
     if (!data) throw new Error('Organization not removed');
     return true;
   }
 
   @Query('getOrganization')
   async getOrganization(@Args('id') id: string): Promise<Organization> {
-    const data = await this.organizationService
-      .getOrganization(id)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    const data = await this.organizationService.getOrganization(id);
     if (!data) throw new Error('Organization not found');
     return data;
   }
@@ -105,11 +77,8 @@ export class OrganizationResolver {
   async organizations(
     @Args('input') input: PageOrganizationInput,
   ): Promise<PageOrganization> {
-    const { data, total } = await this.organizationService
-      .pageOrganization(input)
-      .catch((e) => {
-        throw new Error(e.message);
-      });
+    const { data, total } =
+      await this.organizationService.pageOrganization(input);
     if (!data) throw new Error('No organizations found');
 
     return {
