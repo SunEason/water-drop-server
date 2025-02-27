@@ -10,7 +10,7 @@ import isCourse from 'src/utils/isCourse';
 import pagegen from 'src/utils/pagegen';
 
 type CourseInput = {
-  reducibleTime?: object;
+  reducibleTime?: object[];
   createdBy: string;
   updatedBy?: string;
 } & MutationCourseInput;

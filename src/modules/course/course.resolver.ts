@@ -121,7 +121,7 @@ export class CourseResolver {
   @Mutation('setOrderTime')
   async setOrderTime(
     @Args('id') id: string,
-    @Args('input') input: ReducibleTimeInput[] | undefined | null,
+    @Args('input') input?: ReducibleTimeInput[],
   ): Promise<ReducibleTime[]> {
     const data = await this.courseService.setOrderTime(id, input);
     if (!data) throw new Error('OrderTime not updated');

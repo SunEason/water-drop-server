@@ -5,12 +5,7 @@ const isCourse = (data: PrismaCourse): data is Course & PrismaCourse => {
   if (!data?.reducibleTime) {
     return true;
   }
-  if (
-    Array.isArray(data.reducibleTime) &&
-    data.reducibleTime.every(
-      (item: unknown) => typeof item === 'object' && item,
-    )
-  ) {
+  if (Array.isArray(data.reducibleTime)) {
     return true;
   }
 };
