@@ -6,6 +6,7 @@ import {
   ReducibleTime,
 } from 'src/graphql.schema';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
+import isCourse from 'src/utils/isCourse';
 import pagegen from 'src/utils/pagegen';
 
 type CourseInput = {
@@ -34,8 +35,8 @@ export class CourseService {
         },
       },
     });
-    if (!data) return null;
-    return data as unknown as Course;
+    if (isCourse(data)) return data;
+    return null;
   }
 
   async updateCourse(
@@ -52,8 +53,8 @@ export class CourseService {
         updatedBy: updatedBy,
       },
     });
-    if (!data) return null;
-    return data as unknown as Course;
+    if (isCourse(data)) return data;
+    return null;
   }
 
   async removeCourse(id: string) {
@@ -66,10 +67,8 @@ export class CourseService {
         deletedAt: new Date(),
       },
     });
-    if (!data) {
-      return null;
-    }
-    return true;
+    if (isCourse(data)) return data;
+    return null;
   }
 
   async getCourse(id: string, createdBy: string, orgId: string) {
@@ -83,12 +82,8 @@ export class CourseService {
         },
       },
     });
-
-    if (!data) {
-      return null;
-    }
-
-    return data as unknown as Course;
+    if (isCourse(data)) return data;
+    return null;
   }
 
   async pageCourse(
@@ -134,15 +129,15 @@ export class CourseService {
   }
 
   async setOrderTime(id: string, orderTime: ReducibleTime[]) {
-    const data = (await this.prisma.course.update({
+    const data = await this.prisma.course.update({
       where: {
         id,
       },
       data: {
-        reducibleTime: orderTime as object,
+        reducibleTime: <object>orderTime,
       },
-    })) as unknown as Course;
-    if (!data) return null;
-    return data.reducibleTime;
+    });
+    if (isCourse(data)) return data.reducibleTime;
+    return null;
   }
 }
