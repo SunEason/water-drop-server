@@ -21,12 +21,12 @@ export class CardService {
   }
 
   async getCards(courseId: string) {
-    const data = (await this.prisma.card.findMany({
+    const data = <Card[]>await this.prisma.card.findMany({
       where: {
         courseId,
         deletedAt: null,
       },
-    })) as unknown as Card[];
+    });
     console.log(data);
     if (!data) {
       return null;
