@@ -1,7 +1,7 @@
 type Card {
   id: String!
   createTime: DateTime!
-  updateTime: DateTime!
+  updateTime: DateTime
   # 名称
   name: String!
   # 卡类型

@@ -169,7 +169,7 @@ export abstract class IMutation {
 export class Card {
     id: string;
     createTime: DateTime;
-    updateTime: DateTime;
+    updateTime?: Nullable<DateTime>;
     name: string;
     type: CardType;
     times?: Nullable<number>;
