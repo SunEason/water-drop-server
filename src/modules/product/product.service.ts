@@ -69,9 +69,10 @@ export class ProductService {
           },
         },
         cards: {
-          connect: product.cards.map((id) => ({
-            id: id,
-          })),
+          connect:
+            product.cards?.map((id) => ({
+              id: id,
+            })) || [],
         },
       },
       include: {
@@ -105,9 +106,10 @@ export class ProductService {
           },
         },
         cards: {
-          connect: product.cards.map((id) => ({
-            id: id,
-          })),
+          set:
+            product.cards?.map((id) => ({
+              id: id,
+            })) || [],
         },
       },
       include: {
