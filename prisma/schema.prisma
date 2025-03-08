@@ -63,6 +63,7 @@ model Organization {
   otherImages OrgImage[] @relation("otherImages")
   courses Course[]
   cards Card[]
+  products Product[]
 
   //索引
   @@index([deletedAt])
@@ -144,7 +145,42 @@ model Card {
   // 组织id
   orgId String
   org Organization? @relation(fields: [orgId], references: [id])
+  // 商品
+  products Product[]
 
   //索引
+  @@index([deletedAt])
+}
+
+enum ProductStatus {
+  UN_LIST
+  LIST
+}
+
+model Product {
+  id         String   @id @default(uuid())
+  createTime DateTime @default(now())
+  updateTime DateTime @updatedAt
+  createdBy  String
+  updatedBy  String?
+  deletedAt  DateTime? @map("deleted_at")
+
+  name       String
+  desc       String?
+  type       String?
+  status     ProductStatus @default(UN_LIST)
+  stock      Int @default(0)
+  curStock   Int @default(0)
+  buyNumber  Int @default(0)
+  limitBuyNumber  Int @default(-1)
+  coverUrl    String
+  bannerUrl    String
+  originalPrice    Float
+  preferentialPrice    Float
+  orgId String
+  org Organization? @relation(fields: [orgId], references: [id])
+  cards Card[]
+
+  // 索引
   @@index([deletedAt])
 }

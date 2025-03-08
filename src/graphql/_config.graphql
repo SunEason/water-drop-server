@@ -25,3 +25,8 @@ enum CardType {
   TIME
   DURATION
 }
+
+enum ProductStatus {
+  UN_LIST
+  LIST
+}

@@ -1,0 +1,58 @@
+type Product {
+  id: String!
+  createTime: DateTime!
+  updateTime: DateTime!
+  name:       String!
+  desc:       String
+  type:       String
+  status:     ProductStatus!
+  stock:      Int!
+  curStock:   Int!
+  buyNumber:  Int!
+  limitBuyNumber:  Int!
+  coverUrl:    String
+  bannerUrl:    String
+  originalPrice:    Float!
+  preferentialPrice:    Float!
+  org:           Organization!
+  cards:       [Card!]
+  # cards Card[]
+}
+
+type PageProduct {
+  products: [Product!]
+  pageInfo: pageInfo!
+}
+
+input ProductInput {
+  name:       String!
+  desc:       String
+  type:       String
+  status:     ProductStatus!
+  stock:      Int!
+  curStock:   Int!
+  buyNumber:  Int!
+  limitBuyNumber:  Int!
+  coverUrl:    String!
+  bannerUrl:    String!
+  originalPrice:    Float!
+  preferentialPrice:    Float!
+  cards:       [String!]
+}
+
+input PageProductInput {
+  name: String
+  pageInput: pageInput!
+}
+
+### interface ### 
+type Query {
+  pageProduct(input: PageProductInput): PageProduct
+  product(id: String!): Product
+}
+type Mutation {
+  createProduct(input: ProductInput!): Product
+  updateProduct(id: String!, input: ProductInput!): Product
+  commitProduct(input: ProductInput!, id: String): Product
+  removeProduct(id: String!): Boolean
+}

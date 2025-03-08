@@ -23,6 +23,11 @@ export enum CardType {
     DURATION = "DURATION"
 }
 
+export enum ProductStatus {
+    UN_LIST = "UN_LIST",
+    LIST = "LIST"
+}
+
 export enum Method {
     update = "update",
     create = "create"
@@ -96,6 +101,27 @@ export class MutationOrganizationInput {
     otherImages?: Nullable<OrgImageInput[]>;
 }
 
+export class ProductInput {
+    name: string;
+    desc?: Nullable<string>;
+    type?: Nullable<string>;
+    status: ProductStatus;
+    stock: number;
+    curStock: number;
+    buyNumber: number;
+    limitBuyNumber: number;
+    coverUrl: string;
+    bannerUrl: string;
+    originalPrice: number;
+    preferentialPrice: number;
+    cards?: Nullable<string[]>;
+}
+
+export class PageProductInput {
+    name?: Nullable<string>;
+    pageInput: PageInput;
+}
+
 export class PageStudentInput {
     name?: Nullable<string>;
     pageInput: PageInput;
@@ -157,6 +183,14 @@ export abstract class IMutation {
 
     abstract removeOrganization(id: string): Nullable<boolean> | Promise<Nullable<boolean>>;
 
+    abstract createProduct(input: ProductInput): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract updateProduct(id: string, input: ProductInput): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract commitProduct(input: ProductInput, id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract removeProduct(id: string): Nullable<boolean> | Promise<Nullable<boolean>>;
+
     abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
 
     abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
@@ -192,6 +226,10 @@ export abstract class IQuery {
     abstract getOrganization(id: string): Nullable<Organization> | Promise<Nullable<Organization>>;
 
     abstract OSSInfo(): Nullable<OSSParams> | Promise<Nullable<OSSParams>>;
+
+    abstract pageProduct(input?: Nullable<PageProductInput>): Nullable<PageProduct> | Promise<Nullable<PageProduct>>;
+
+    abstract product(id: string): Nullable<Product> | Promise<Nullable<Product>>;
 
     abstract students(input: PageStudentInput): Nullable<Students> | Promise<Nullable<Students>>;
 
@@ -273,6 +311,31 @@ export class OSSParams {
     accessId: string;
     host: string;
     dir: string;
+}
+
+export class Product {
+    id: string;
+    createTime: DateTime;
+    updateTime: DateTime;
+    name: string;
+    desc?: Nullable<string>;
+    type?: Nullable<string>;
+    status: ProductStatus;
+    stock: number;
+    curStock: number;
+    buyNumber: number;
+    limitBuyNumber: number;
+    coverUrl?: Nullable<string>;
+    bannerUrl?: Nullable<string>;
+    originalPrice: number;
+    preferentialPrice: number;
+    org: Organization;
+    cards?: Nullable<Card[]>;
+}
+
+export class PageProduct {
+    products?: Nullable<Product[]>;
+    pageInfo: PageInfo;
 }
 
 export class Student {

@@ -13,6 +13,7 @@ import { StudentModule } from './modules/student/student.module';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { CourseModule } from './modules/course/course.module';
 import { CardModule } from './modules/card/card.module';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CardModule } from './modules/card/card.module';
     OrganizationModule,
     CourseModule,
     CardModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
