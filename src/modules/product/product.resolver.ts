@@ -3,10 +3,17 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/modules/common/guards/auth.guard';
 import { ProductService } from './product.service';
-import { PageProduct, PageProductInput, Product } from 'src/graphql.schema';
+import {
+  PageProduct,
+  PageProductInput,
+  Product,
+  ProductStatus,
+  ProductType,
+} from 'src/graphql.schema';
 import { CurUserId } from '../common/decorators/current-user.decorator';
 import { CurOrgId } from '../common/decorators/current-org.decorator';
 import { IProductInput } from './types/input';
+import { PRODUCT_TYPES } from 'src/const/productTypes';
 
 @Resolver()
 @UseGuards(GqlAuthGuard)
@@ -39,6 +46,11 @@ export class ProductResolver {
         pageSize: input.pageInput.pageSize,
       },
     };
+  }
+
+  @Query('productTypes')
+  async productTypes(): Promise<ProductType[]> {
+    return PRODUCT_TYPES;
   }
 
   @Mutation('createProduct')
@@ -90,6 +102,16 @@ export class ProductResolver {
   async removeProduct(@Args('id') id: string): Promise<boolean> {
     const data = await this.productService.removeProduct(id);
     if (!data) throw new Error('Product not removed');
+    return true;
+  }
+
+  @Mutation('changeStatus')
+  async changeStatus(
+    @Args('id') id: string,
+    @Args('status') status: ProductStatus,
+  ): Promise<boolean> {
+    const data = await this.productService.changeStatus(id, status);
+    if (!data) throw new Error('Product status not changed');
     return true;
   }
 }

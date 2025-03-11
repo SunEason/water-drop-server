@@ -24,17 +24,22 @@ type PageProduct {
   pageInfo: pageInfo!
 }
 
+type ProductType {
+  title: String!
+  key: String!
+}
+
 input ProductInput {
   name:       String!
   desc:       String
   type:       String
-  status:     ProductStatus!
+  status:     ProductStatus
   stock:      Int!
-  curStock:   Int!
-  buyNumber:  Int!
+  curStock:   Int
+  buyNumber:  Int
   limitBuyNumber:  Int!
-  coverUrl:    String!
-  bannerUrl:    String!
+  coverUrl:    String
+  bannerUrl:    String
   originalPrice:    Float!
   preferentialPrice:    Float!
   cards:       [String!]
@@ -49,10 +54,12 @@ input PageProductInput {
 type Query {
   pageProduct(input: PageProductInput): PageProduct
   product(id: String!): Product
+  productTypes: [ProductType!]
 }
 type Mutation {
   createProduct(input: ProductInput!): Product
   updateProduct(id: String!, input: ProductInput!): Product
   commitProduct(input: ProductInput!, id: String): Product
   removeProduct(id: String!): Boolean
+  changeStatus(id: String!, status: ProductStatus!): Boolean
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ProductStatus } from '@prisma/client';
 import { PageProductInput, Product, ProductInput } from 'src/graphql.schema';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import pagegen from 'src/utils/pagegen';
@@ -135,6 +136,19 @@ export class ProductService {
     if (!data) {
       return null;
     }
+    return data;
+  }
+
+  changeStatus(id: string, status: ProductStatus) {
+    const data = this.prisma.product.update({
+      where: {
+        id: id,
+      },
+      data: {
+        status: status,
+      },
+    });
+    if (!data) return null;
     return data;
   }
 }

@@ -105,13 +105,13 @@ export class ProductInput {
     name: string;
     desc?: Nullable<string>;
     type?: Nullable<string>;
-    status: ProductStatus;
+    status?: Nullable<ProductStatus>;
     stock: number;
-    curStock: number;
-    buyNumber: number;
+    curStock?: Nullable<number>;
+    buyNumber?: Nullable<number>;
     limitBuyNumber: number;
-    coverUrl: string;
-    bannerUrl: string;
+    coverUrl?: Nullable<string>;
+    bannerUrl?: Nullable<string>;
     originalPrice: number;
     preferentialPrice: number;
     cards?: Nullable<string[]>;
@@ -191,6 +191,8 @@ export abstract class IMutation {
 
     abstract removeProduct(id: string): Nullable<boolean> | Promise<Nullable<boolean>>;
 
+    abstract changeStatus(id: string, status: ProductStatus): Nullable<boolean> | Promise<Nullable<boolean>>;
+
     abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
 
     abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
@@ -230,6 +232,8 @@ export abstract class IQuery {
     abstract pageProduct(input?: Nullable<PageProductInput>): Nullable<PageProduct> | Promise<Nullable<PageProduct>>;
 
     abstract product(id: string): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract productTypes(): Nullable<ProductType[]> | Promise<Nullable<ProductType[]>>;
 
     abstract students(input: PageStudentInput): Nullable<Students> | Promise<Nullable<Students>>;
 
@@ -336,6 +340,11 @@ export class Product {
 export class PageProduct {
     products?: Nullable<Product[]>;
     pageInfo: PageInfo;
+}
+
+export class ProductType {
+    title: string;
+    key: string;
 }
 
 export class Student {
