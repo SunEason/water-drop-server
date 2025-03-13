@@ -4,6 +4,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/modules/common/guards/auth.guard';
 import { ProductService } from './product.service';
 import {
+  Card,
   PageProduct,
   PageProductInput,
   Product,
@@ -73,14 +74,8 @@ export class ProductResolver {
     @Args('input') input: IProductInput,
     @Args('id') id: string,
     @CurUserId() curUserId: string,
-    @CurOrgId() curOrgId: string,
   ): Promise<Product> {
-    const data = await this.productService.updateProduct(
-      id,
-      input,
-      curUserId,
-      curOrgId,
-    );
+    const data = await this.productService.updateProduct(id, input, curUserId);
     if (!data) throw new Error('Product not updated');
     return data;
   }
@@ -93,7 +88,7 @@ export class ProductResolver {
     @CurOrgId() curOrgId: string,
   ): Promise<Product> {
     if (id) {
-      return this.updateProduct(input, id, curUserId, curOrgId);
+      return this.updateProduct(input, id, curUserId);
     }
     return this.createProduct(input, curUserId, curOrgId);
   }
@@ -113,5 +108,20 @@ export class ProductResolver {
     const data = await this.productService.changeStatus(id, status);
     if (!data) throw new Error('Product status not changed');
     return true;
+  }
+
+  @Mutation('setCards')
+  async setCards(
+    @Args('id') id: string,
+    @CurUserId() curUserId: string,
+    @Args('cards') cards: string[],
+  ): Promise<Card[]> {
+    const data = await this.productService.updateProduct(
+      id,
+      { cards },
+      curUserId,
+    );
+    if (!data) throw new Error('Product not updated');
+    return data.cards;
   }
 }

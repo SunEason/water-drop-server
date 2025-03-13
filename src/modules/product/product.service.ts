@@ -9,18 +9,22 @@ export class ProductService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getProduct(id: string) {
-    const data = <Product>await this.prisma.product.findUnique({
+    const data = await this.prisma.product.findUnique({
       where: {
         id: id,
         deletedAt: null,
       },
       include: {
-        cards: true,
+        cards: {
+          include: {
+            course: true,
+          },
+        },
         org: true,
       },
     });
     if (!data) return null;
-    return data;
+    return data as unknown as Product;
   }
 
   async pageProducts(pageParams: PageProductInput, curOrgId: string) {
@@ -89,11 +93,10 @@ export class ProductService {
 
   async updateProduct(
     id: string,
-    product: ProductInput,
+    product: Partial<ProductInput>,
     updatedBy: string,
-    orgId: string,
   ) {
-    const data = <Product>await this.prisma.product.update({
+    const data = await this.prisma.product.update({
       where: {
         id: id,
         deletedAt: null,
@@ -101,11 +104,11 @@ export class ProductService {
       data: {
         ...product,
         updatedBy: updatedBy,
-        org: {
-          connect: {
-            id: orgId,
-          },
-        },
+        // org: {
+        //   connect: {
+        //     id: orgId,
+        //   },
+        // },
         cards: {
           set:
             product.cards?.map((id) => ({
@@ -114,14 +117,18 @@ export class ProductService {
         },
       },
       include: {
-        cards: true,
+        cards: {
+          include: {
+            course: true,
+          },
+        },
         org: true,
       },
     });
     if (!data) {
       return null;
     }
-    return data;
+    return data as unknown as Product;
   }
 
   async removeProduct(id: string) {
@@ -149,6 +156,6 @@ export class ProductService {
       },
     });
     if (!data) return null;
-    return data;
+    return data as unknown as Product;
   }
 }

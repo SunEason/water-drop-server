@@ -62,4 +62,5 @@ type Mutation {
   commitProduct(input: ProductInput!, id: String): Product
   removeProduct(id: String!): Boolean
   changeStatus(id: String!, status: ProductStatus!): Boolean
+  setCards(id: String!, cards: [String!]): [Card!]
 }

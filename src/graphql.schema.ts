@@ -193,6 +193,8 @@ export abstract class IMutation {
 
     abstract changeStatus(id: string, status: ProductStatus): Nullable<boolean> | Promise<Nullable<boolean>>;
 
+    abstract setCards(id: string, cards?: Nullable<string[]>): Nullable<Card[]> | Promise<Nullable<Card[]>>;
+
     abstract createUser(input: UserInput): Nullable<User> | Promise<Nullable<User>>;
 
     abstract updateUser(id: string, input: UserInput): Nullable<User> | Promise<Nullable<User>>;
@@ -210,6 +212,7 @@ export class Card {
     type: CardType;
     times?: Nullable<number>;
     duration?: Nullable<number>;
+    course?: Nullable<Course>;
 }
 
 export abstract class IQuery {
